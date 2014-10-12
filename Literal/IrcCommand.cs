@@ -23,6 +23,9 @@ namespace Literal {
         }
 
         private void Parse(string message) {
+            char[] trimChar = { ' ', '\r', '\n' };
+            message = message.TrimEnd(trimChar);
+
             // Check for prefix/origin
             if (message.StartsWith(":")) {
                 int originEnd = message.IndexOf(" ");
@@ -36,12 +39,12 @@ namespace Literal {
 
             // Get args
             int argsEnd = message.IndexOf(" :");
-            string fullargs = message.Substring(commandEnd + 1, (argsEnd < 0 ? message.Length : argsEnd) - 1);
-            args = fullargs.Split(' ');
+            string[] argmsg = message.Split(new string[]{" :"}, 2, StringSplitOptions.None);
+            args = argmsg[0].Split(' ');
 
             // Check if there is a text part and get it
-            if (argsEnd < 0) return;
-            text = message.Substring(argsEnd + 2);
+            if (argmsg.Length > 1)
+                text = argmsg[1]; 
         }
 
         public override string ToString() {
