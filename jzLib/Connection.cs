@@ -2,7 +2,6 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
-
 namespace jzIRC {
 
     /// <summary>
@@ -36,9 +35,11 @@ namespace jzIRC {
         /// <param name="serverAddress">Address of the server, will be DNS resolved</param>
         /// <param name="serverPort">Port to connect to</param>
         /// <param name="useSSL">Is SSL used? (not implemented yet)</param>
-        public void Connect(string serverAddress, int serverPort, bool useSSL) {
+        public void Connect(string serverAddress, int serverPort, bool useSSL = false) {
             if (useSSL) throw new System.NotImplementedException();
-            serverInfo = new ServerInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
+            this.serverInfo = new ServerInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
+
+
         }
 
         /// <summary>

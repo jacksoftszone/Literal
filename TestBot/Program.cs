@@ -22,7 +22,7 @@ namespace TestBot {
                 };
             };
 
-            server.Connect(serverAddr, serverPort, false);
+            server.Connect(serverAddr, serverPort);
         }
     }
 }
