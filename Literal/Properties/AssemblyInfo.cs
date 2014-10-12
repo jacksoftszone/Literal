@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("jzIRC")]
+[assembly: AssemblyTitle("Literal")]
 [assembly: AssemblyDescription("IRC library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("#jacksoftszone")]
-[assembly: AssemblyProduct("jzIRC")]
+[assembly: AssemblyProduct("Literal")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

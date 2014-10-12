@@ -1,8 +1,9 @@
 ﻿// Copyright 2014 #jacksoftszone
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
+using System.Net.Sockets;
 
-namespace jzIRC {
+namespace Literal {
 
     /// <summary>
     /// Connection handler to IRC servers
@@ -29,6 +30,8 @@ namespace jzIRC {
 
         public ServerInfo serverInfo { public get; private set; }
 
+        private TcpClient serverSocket;
+
         /// <summary>
         /// Connects to a determined IRC server using the provided address and port.
         /// </summary>
@@ -39,7 +42,7 @@ namespace jzIRC {
             if (useSSL) throw new System.NotImplementedException();
             this.serverInfo = new ServerInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
 
-
+            serverSocket = new TcpClient(serverInfo.address, serverInfo.port);
         }
 
         /// <summary>

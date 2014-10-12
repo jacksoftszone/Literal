@@ -2,8 +2,8 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("jzIRC TestBot")]
-[assembly: AssemblyDescription("Test jzLib features")]
+[assembly: AssemblyTitle("Literal TestBot")]
+[assembly: AssemblyDescription("Test Literal features")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("#jacksoftszone")]
 [assembly: AssemblyProduct("TestBot")]

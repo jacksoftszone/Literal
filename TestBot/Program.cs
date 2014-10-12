@@ -2,7 +2,7 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
-using jzIRC;
+using Literal;
 
 namespace TestBot {
     class Program {
@@ -18,7 +18,7 @@ namespace TestBot {
                 conn.Joined += (_, chan, me) => {
                     if (!me) return;
                     conn.Message(chan, "Hi all!");
-                    conn.Quit("jzIRC iz da bestu!1");
+                    conn.Quit("Literal iz da bestu!1");
                 };
             };
 
