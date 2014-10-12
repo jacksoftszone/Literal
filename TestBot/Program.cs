@@ -3,26 +3,36 @@
 // Refer to the LICENSE.txt file included.
 
 using Literal;
+using System.Threading.Tasks;
 
 namespace TestBot {
     class Program {
         static IrcConnection server;
 
-        const string serverAddr = "irc.azzurra.org";
+        const string serverAddr = "ugo.darkspirit.org";
         const int serverPort = 6667;
 
+        static bool hasFinished = false;
+
         static void Main(string[] args) {
-            server = new IrcConnection();
+            server = new IrcConnection(serverAddr, serverPort);
+
             server.Connected += (conn) => {
-                conn.Join("#jcslab");
                 conn.Joined += (_, chan, me) => {
                     if (!me) return;
                     conn.Message(chan, "Hi all!");
                     conn.Quit("Literal iz da bestu!1");
+                    hasFinished = true;
                 };
+                conn.Join("#jcslab");
             };
 
-            server.Connect(serverAddr, serverPort);
+            server.RawMessage += (_, msg) => {
+                System.Console.WriteLine("> " + msg);
+            };
+
+            Task s = server.Connect("TestLit", "test", "Testing bot");
+            while (!hasFinished) ;
         }
     }
 }
