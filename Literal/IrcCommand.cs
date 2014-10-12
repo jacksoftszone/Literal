@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
+using System;
 namespace Literal {
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Literal {
 
             // Get command, uppercase-ify
             int commandEnd = message.IndexOf(" ");
-            command = message.Substring(0, commandEnd - 1).ToUpper();
+            command = message.Substring(0, commandEnd).ToUpper();
 
             // Get args
             int argsEnd = message.IndexOf(" :");
@@ -41,6 +42,15 @@ namespace Literal {
             // Check if there is a text part and get it
             if (argsEnd < 0) return;
             text = message.Substring(argsEnd + 2);
+        }
+
+        public string ToString() {
+            string final = "";
+            if (origin.Length > 0) final += ":" + origin + " ";
+            final += command;
+            if (args.Length > 0) final += " " + string.Join(" ", args);
+            if (text.Length > 0) final += " :" + text;
+            return final;
         }
     }
 }

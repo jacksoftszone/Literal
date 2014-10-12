@@ -69,8 +69,8 @@ namespace Literal {
             serverSocket = new TcpClient();
             await serverSocket.ConnectAsync(serverInfo.address, serverInfo.port);
             serverStream = serverSocket.GetStream();
-            await Write("USER", username, "0", "*", realname);
-            await Write("NICK", nickname);
+            await Write("USER " + username + " 0 * :" + realname);
+            await Write("NICK " + nickname);
             await ReadLoop();
         }
 
@@ -101,18 +101,9 @@ namespace Literal {
 
         #endregion
         #region Private methods
-        private async Task Write(params string[] text) {
-            // If we have more than one argument prefix the last one with ":"
-            if (text.Length > 1) {
-                text[text.Length - 1] = ":" + text[text.Length - 1];
-            }
-
-            // To avoid issues, let's uppercase the first item
-            text[0] = text[0].ToUpper();
-
+        private async Task Write(string command) {
             // Prepare command for being written
-            string command = string.Join(" ", text);
-            byte[] utfstring = Encoding.UTF8.GetBytes(command+"\r\n");
+            byte[] utfstring = Encoding.UTF8.GetBytes(command + "\r\n");
 
             // Write to network stream
             await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
@@ -120,14 +111,23 @@ namespace Literal {
 
         private async Task ReadLoop() {
             // According to RFC2812, each IRC message must be within 512 characters
+            // But as our motto says "Trust is for the weak"
             byte[] bytes = new byte[512];
+            string message = "";
             int read = -1;
+            char[] trimChar = { ' ', '\r', '\n' };
             while (read != 0) {
                 read = await serverStream.ReadAsync(bytes, 0, 512);
-                string message = Encoding.UTF8.GetString(bytes, 0, read);
-                if (RawMessage != null) RawMessage(this, message);
+                string decoded = Encoding.UTF8.GetString(bytes, 0, read);
 
+                if (decoded.IndexOf("\n") < 0) {
+                    message += decoded.TrimEnd(trimChar);
+                    continue;
+                }
+
+                if (RawMessage != null) RawMessage(this, message);
                 IrcCommand command = new IrcCommand(message);
+                message = "";
             }
         }
         #endregion
