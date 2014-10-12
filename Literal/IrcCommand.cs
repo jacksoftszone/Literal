@@ -44,7 +44,7 @@ namespace Literal {
             text = message.Substring(argsEnd + 2);
         }
 
-        public string ToString() {
+        public override string ToString() {
             string final = "";
             if (origin.Length > 0) final += ":" + origin + " ";
             final += command;

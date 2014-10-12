@@ -1,6 +1,8 @@
 ﻿// Copyright 2014 #jacksoftszone
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
+
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -119,14 +121,21 @@ namespace Literal {
             while (read != 0) {
                 read = await serverStream.ReadAsync(bytes, 0, 512);
                 string decoded = Encoding.UTF8.GetString(bytes, 0, read);
+                message += decoded;
 
-                if (decoded.IndexOf("\n") < 0) {
-                    message += decoded.TrimEnd(trimChar);
-                    continue;
+                // Message longer than 512 characters, get the rest
+                if (message.IndexOf("\n") < 0) continue;
+
+                // Get the messages we got so far, leave the rest
+                string[] messages = message.Split('\n');
+                message = messages.Last();
+
+                foreach (string msg in messages.Take(messages.Length - 1)) {
+                    string trimMessage = msg.TrimEnd(trimChar);
+                    if (RawMessage != null) RawMessage(this, trimMessage);
+                    IrcCommand command = new IrcCommand(trimMessage);
                 }
-
-                if (RawMessage != null) RawMessage(this, message);
-                IrcCommand command = new IrcCommand(message);
+                
                 message = "";
             }
         }
