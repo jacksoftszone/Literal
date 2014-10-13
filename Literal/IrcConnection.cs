@@ -35,6 +35,12 @@ namespace Literal {
         public event RawMessageHandler RawMessage;
         public delegate void RawMessageHandler(IrcConnection connection, string rawmessage);
 
+        /// <summary>
+        /// Called for every server error
+        /// </summary>
+        public event ErrorHandler ServerError;
+        public delegate void ErrorHandler(IrcConnection connection, int code, string error);
+
         #endregion
         #region Variables
 
@@ -43,6 +49,12 @@ namespace Literal {
             public int port;
             public bool useSSL;
         }
+
+        /// <summary>
+        /// Try a random nick if the provided one is taken
+        /// If false, it may give a 433 (Nickname in use) error while connecting.
+        /// </summary>
+        public bool randomNickIfTaken = false;
 
         public ServerConnectionInfo serverConnInfo { get; private set; }
         public IrcServer serverInfo { get; private set; }
@@ -355,9 +367,14 @@ namespace Literal {
                     break;
 
                 case "433": // Nickname in use
-                    // Future option (maybe): "Generate a random number after the nick if the one is in use"
-                    Random rnd = new Random();
-                    await Nick(me + rnd.Next(000, 999).ToString());
+                    if (randomNickIfTaken) {
+                        Random rnd = new Random();
+                        await Nick(me + rnd.Next(000, 999).ToString());
+                    } else {
+                        if (ServerError != null) {
+                            ServerError(this, 433, "Nickname in use");
+                        }
+                    }
                     break;
 
                 #endregion
