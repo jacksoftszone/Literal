@@ -1,5 +1,5 @@
 ﻿namespace Literal {
-    class IrcUser {
+    public class IrcUser {
         public string nickname;
         public string identd;
         public string hostname;

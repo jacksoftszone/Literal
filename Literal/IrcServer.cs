@@ -1,5 +1,5 @@
 ﻿namespace Literal {
-    class IrcServer {
+    public class IrcServer {
         // Server name (user given)
         public string host, name;
 
