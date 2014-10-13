@@ -169,8 +169,6 @@ namespace Literal {
                     IrcCommand command = new IrcCommand(trimMessage);
                     await Handle(command);
                 }
-                
-                message = "";
             }
         }
 
