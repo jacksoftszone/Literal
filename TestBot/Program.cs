@@ -34,7 +34,7 @@ namespace TestBot {
             };
 #endif
 
-            Task s = server.Connect("TestLit", "myuser", "Testing bot");
+            server.Connect("TestLit", "myuser", "Testing bot");
             while (!hasFinished) ;
         }
     }

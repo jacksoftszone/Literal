@@ -67,38 +67,39 @@ namespace Literal {
         /// <param name="username">Username (or identd)</param>
         /// <param name="realname">Real name</param>
         /// <returns></returns>
-        public async Task Connect(string nickname, string username, string realname) {
+        public async void Connect(string nickname, string username, string realname) {
             serverSocket = new TcpClient();
             await serverSocket.ConnectAsync(serverInfo.address, serverInfo.port);
             serverStream = serverSocket.GetStream();
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
-            await ReadLoop();
+            if (Connected != null) Connected(this);
+            ReadLoop();
         }
 
         /// <summary>
         /// Sends a QUIT message and terminates the connection.
         /// </summary>
         /// <param name="exitMessage">Message to send along the QUIT command</param>
-        public void Quit(string exitMessage) {
-            throw new System.NotImplementedException();
+        public async void Quit(string exitMessage) {
+            await Write("QUIT :" + exitMessage); ;
         }
 
         /// <summary>
         /// Joins a channel on the server
         /// </summary>
         /// <param name="channel">Channel to join, requires prefix (likely #)</param>
-        public void Join(string channel) {
-            throw new System.NotImplementedException();
+        public async void Join(string channel) {
+            await Write("JOIN " + channel);
         }
 
         /// <summary>
         /// Part from channel on the server
         /// </summary>
         /// <param name="channel">Channel to part, requires prefix (likely #)</param>
-        public void Part(string channel)
+        public async void Part(string channel)
         {
-            throw new System.NotImplementedException();
+            await Write("PART " + channel);
         }
 
         /// <summary>
@@ -106,8 +107,8 @@ namespace Literal {
         /// </summary>
         /// <param name="channel">Channel to send the message to</param>
         /// <param name="message">Message to send</param>
-        public void Message(string channel, string message) {
-            throw new System.NotImplementedException();
+        public async void Message(string channel, string message) {
+            await Write("PRIVMSG " + channel + " :" + message);
         }
 
         /// <summary>
@@ -115,9 +116,9 @@ namespace Literal {
         /// </summary>
         /// <param name="chanusr">Channel/User to send the CTCP to</param>
         /// <param name="ctcp">CTCP to send</param>
-        public void CTCP(string chanusr, string ctcp)
+        public async void CTCP(string chanusr, string ctcp)
         {
-            throw new System.NotImplementedException();
+            await Write("PRIVMSG " + chanusr + " :" + (char)1 + ctcp + (char)1);
         }
 
         /// <summary>
@@ -125,9 +126,9 @@ namespace Literal {
         /// </summary>
         /// <param name="chanusr">Channel/User to send the notice to</param>
         /// <param name="notice">Notice to send</param>
-        public void Notice(string chanusr, string notice)
+        public async void Notice(string chanusr, string notice)
         {
-            throw new System.NotImplementedException();
+            await Write("NOTICE " + chanusr + " :" + notice);
         }
 
         #endregion
@@ -144,7 +145,7 @@ namespace Literal {
             await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
         }
 
-        private async Task ReadLoop() {
+        private async void ReadLoop() {
             // According to RFC2812, each IRC message must be within 512 characters
             // IRCv3 does 1024 (with tagging), so let's use 1024 base and split on \r\n
             // But as our motto says "Trust is for the weak"
