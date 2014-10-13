@@ -144,9 +144,25 @@ namespace Literal {
         /// Set a new nickname.
         /// </summary>
         /// <param name="newnick">The new Nickname to be set</param>
-        public async Task Nick(string newnick)
-        {
+        public async Task Nick(string newnick) {
             await Write("NICK " + newnick);
+        }
+
+        /// <summary>
+        /// Gets the topic from a channel in the server
+        /// </summary>
+        /// <param name="channel">Channel to get topic of</param>
+        public async Task Topic(string channel) {
+            await Write("TOPIC " + channel);
+        }
+
+        /// <summary>
+        /// Sets the topic for a channel, some modes might be required
+        /// </summary>
+        /// <param name="channel">Channel to set topic of</param>
+        /// <param name="newtopic">Topic to set</param>
+        public async Task Topic(string channel, string newtopic) {
+            await Write("TOPIC " + channel + " :" + newtopic);
         }
 
         /// <summary>
@@ -257,10 +273,14 @@ namespace Literal {
 
                 case "004": // Server info
                     // Format: :<SERVER> 004 <NICK> <SNAME> <VERSION> <UMODES> <CMODES> ...
-                    serverInfo.serverName = command.args.Length > 1 ? command.args[1] : "";
-                    serverInfo.serverVersion = command.args.Length > 2 ? command.args[2] : "";
-                    serverInfo.userModes = command.args.Length > 3 ? command.args[3] : "";
-                    serverInfo.channelModes = command.args.Length > 4 ? command.args[4] : "";
+                    if (command.args.Length < 4) {
+                        Debug.Log("004 format is not compliant to RFC");
+                        break;
+                    }
+                    serverInfo.serverName = command.args[1];
+                    serverInfo.serverVersion = command.args[2];
+                    serverInfo.userModes = command.args[3];
+                    serverInfo.channelModes = command.args[4];
                     //TODO Some IRCd might have additional parameters.. do we care?
                     break;
 
@@ -285,27 +305,42 @@ namespace Literal {
                     break;
 
                 case "331": // RPL_NOTOPIC / Empty topic (no need to do anything for now)
-                    if (channels.ContainsKey(command.args[0])) {
+                    if (!channels.ContainsKey(command.args[1])) {
                         Debug.Log("Received topic for an unrelated channel");
                         break;
                     }
                     break;
 
                 case "332": // RPL_TOPIC / Got topic
-                    if (channels.ContainsKey(command.args[0])) {
+                    if (!channels.ContainsKey(command.args[1])) {
                         Debug.Log("Received topic for an unrelated channel");
                         break;
                     }
                     // Set topic
                     if (command.text != null && command.text.Length > 0) {
-                        channels[command.args[0]].topic = command.text;
+                        channels[command.args[1]].topic = command.text;
                     }
                     break;
 
                 case "333": // RPL_TOPICWHOTIME
-                    //TODO
+                    if (!channels.ContainsKey(command.args[1])) {
+                        Debug.Log("Received topic for an unrelated channel");
+                        break;
+                    }
+                    if (command.args.Length < 2) {
+                        Debug.Log("333 format not compliant to standards");
+                        break;
+                    }
+                    channels[command.args[1]].topicBy = command.args[2];
+                    long time;
+                    bool conv = long.TryParse(command.args[3], out time);
+                    if (conv) {
+                        channels[command.args[1]].topicWhenUnix = time;
+                    } else {
+                        Debug.Log("Couldn't parse time from 333");
+                    }
                     break;
-                    
+
 
                 case "353": // RPL_NAMREPLY / NAMES reply
                 case "366": // RPL_ENDOFNAMES
