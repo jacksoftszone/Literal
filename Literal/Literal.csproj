@@ -33,6 +33,7 @@
     <Compile Include="Debug.cs" />
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcCommand.cs" />
+    <Compile Include="IrcServer.cs" />
     <Compile Include="IrcUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

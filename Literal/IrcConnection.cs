@@ -36,17 +36,18 @@ namespace Literal {
         #endregion
         #region Variables
 
-        public struct ServerInfo {
+        public struct ServerConnectionInfo {
             public string address;
             public int port;
             public bool useSSL;
         }
 
-        public ServerInfo serverInfo { get; private set; }
+        public ServerConnectionInfo serverConnInfo { get; private set; }
 
         private TcpClient serverSocket;
         private NetworkStream serverStream;
         private IrcUser me;
+        private IrcServer serverInfo;
 
         #endregion
         #region Public methods / APIs
@@ -58,7 +59,8 @@ namespace Literal {
         /// <param name="useSSL">Is SSL used? (not implemented yet)</param>
         public IrcConnection(string serverAddress, int serverPort, bool useSSL = false) {
             if (useSSL) throw new System.NotImplementedException();
-            serverInfo = new ServerInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
+            serverConnInfo = new ServerConnectionInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
+            serverInfo = new IrcServer { host = serverAddress };
         }
 
         /// <summary>
@@ -70,7 +72,7 @@ namespace Literal {
         /// <returns></returns>
         public async void Connect(string nickname, string username, string realname) {
             serverSocket = new TcpClient();
-            await serverSocket.ConnectAsync(serverInfo.address, serverInfo.port);
+            await serverSocket.ConnectAsync(serverConnInfo.address, serverConnInfo.port);
             serverStream = serverSocket.GetStream();
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
@@ -165,7 +167,7 @@ namespace Literal {
                 string decoded = Encoding.UTF8.GetString(bytes, 0, read);
                 message += decoded;
 
-                // Message longer than 512 characters, get the rest
+                // Message longer than 1024 characters, get the rest
                 if (message.IndexOf("\n") < 0) continue;
 
                 // Get the messages we got so far, leave the rest
@@ -182,11 +184,17 @@ namespace Literal {
         }
 
         private async Task Handle(IrcCommand command) {
-            switch (command.command) {
+            switch (command.command.ToUpper()) {
+                #region Server Requests
+
                 case "PING":
                     command.command = "PONG";
                     await Write("PONG :" + command.text);
                     break;
+
+                #endregion
+                #region User actions
+
                 case "JOIN":
                     // Get user
                     IrcUser user = IrcUser.fromOrigin(command.origin);
@@ -204,6 +212,30 @@ namespace Literal {
 
                     //TODO tell the channel (when IrcChannel will exist)
                     break;
+
+                #endregion
+                #region Server messages
+
+                case "001": // Welcome messages
+                case "002":
+                case "003":
+                    break;
+
+                case "004": // Server info
+                    // Format: :<SERVER> 004 <NICK> <SNAME> <VERSION> <UMODES> <CMODES> ...
+                    serverInfo.serverName = command.args.Length > 1 ? command.args[1] : "";
+                    serverInfo.serverVersion = command.args.Length > 2 ? command.args[2] : "";
+                    serverInfo.userModes = command.args.Length > 3 ? command.args[3] : "";
+                    serverInfo.channelModes = command.args.Length > 4 ? command.args[4] : "";
+                    //TODO Some IRCd might have additional parameters.. do we care?
+                    break;
+
+                case "005": // RPL_ISUPPORT / Capabilities
+                    //TODO
+                    break;
+
+                #endregion
+
                 default:
                     Debug.Error("Unknown command: " + command.command + " in \r\n  " + command.ToString());
                     break;
