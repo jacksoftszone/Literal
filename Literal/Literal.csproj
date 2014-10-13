@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcCommand.cs" />
+    <Compile Include="IrcUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
