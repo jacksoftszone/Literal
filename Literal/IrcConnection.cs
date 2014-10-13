@@ -365,7 +365,13 @@ namespace Literal {
                 case "ERROR":
                     Debug.Error("Got ERROR from server:\r\n " + command.text);
                     break;
-
+                case "404": // ERR_CANNOTSENDTOCHAN / due to chanmodes (+m with no grades) or +b and still on chan
+                case "405": // ERR_TOOMANYCHANNELS
+                case "411": // ERR_NORECIPIENT / command issued without a recipient, WHOIS and INVITE uses a different error, 431 and 461)
+                case "416": // ERR_QUERYTOOLONG
+                case "421": // ERR_UNKNOWNCOMMAND
+                case "431": // ERR_NONICKNAMEGIVEN
+                case "432": // ERR_ERRONEOUSNICKNAME
                 case "433": // Nickname in use
                     if (randomNickIfTaken) {
                         Random rnd = new Random();
@@ -375,6 +381,8 @@ namespace Literal {
                             ServerError(this, 433, "Nickname in use");
                         }
                     }
+                    break;
+                case "437": //ERR_BANNICKCHANGE / attempt to change nick while banned on a chan
                     break;
 
                 #endregion
