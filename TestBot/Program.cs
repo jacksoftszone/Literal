@@ -19,13 +19,13 @@ namespace TestBot {
             server = new IrcConnection(serverAddr, serverPort);
 
             server.Connected += (conn) => {
-                conn.Joined += (_, chan, me) => {
+                server.Joined += (_, chan, me) => {
                     if (!me) return;
-                    conn.Message(chan, "Hi all!");
-                    conn.Quit("Literal iz da bestu!1");
-                    hasFinished = true;
+                    server.Message(chan, "Hi all!").Wait();
+                    server.Quit("Literal iz da bestu!1").Wait();
+                    //hasFinished = true;
                 };
-                conn.Join("#jcslab");
+                server.Join("#jcslab").Wait();
             };
 
 #if DEBUG
