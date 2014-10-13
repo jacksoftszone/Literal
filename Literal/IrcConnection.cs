@@ -231,7 +231,34 @@ namespace Literal {
                     break;
 
                 case "005": // RPL_ISUPPORT / Capabilities
-                    //TODO
+                    //TODO Parse capabilities
+                    break;
+
+                case "251": // RPL_LUSERCLIENT / List user result
+                case "252": // RPL_LUSEROP
+                case "253": // RPL_LUSERUNKNOWN
+                case "254": // RPL_LUSERCHANNELS
+                case "255": // RPL_LUSERME
+                case "265": // RPL_LOCALUSERS
+                case "266": // RPL_GLOBALUSERS
+                    //TODO? Server user list (do we care?)
+                    break;
+
+                case "372": // RPL_MOTD / MOTD
+                case "375": // RPL_MOTDSTART
+                case "376": // RPL_ENDOFMOTD
+                    //TODO MOTD handling (parse and save to IrcServer)
+                    break;
+
+                case "331": // RPL_NOTOPIC / Channel Topic
+                case "332": // RPL_TOPIC
+                case "333": // RPL_TOPICWHOTIME
+                    //TODO Topic handling (delegate to IrcChannel)
+                    break;
+
+                case "353": // RPL_NAMREPLY / NAMES reply
+                case "366": // RPL_ENDOFNAMES
+                    //TODO Userlist handling (delegate to IrcChannel)
                     break;
 
                 #endregion
