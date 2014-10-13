@@ -12,6 +12,7 @@ namespace TestBot {
         //const string serverAddr = "192.168.46.100";
         const string serverAddr = "irc.azzurra.org";
         const int serverPort = 6667;
+        const bool closeOnQuit = true;
 
         static bool hasFinished = false;
 
@@ -23,7 +24,7 @@ namespace TestBot {
                     if (!me) return;
                     server.Message(chan, "Hi all!").Wait();
                     server.Quit("Literal iz da bestu!1").Wait();
-                    //hasFinished = true;
+                    if (closeOnQuit) hasFinished = true;
                 };
                 server.Join("#jcslab").Wait();
             };
