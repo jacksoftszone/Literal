@@ -93,11 +93,40 @@ namespace Literal {
         }
 
         /// <summary>
+        /// Part from channel on the server
+        /// </summary>
+        /// <param name="channel">Channel to part, requires prefix (likely #)</param>
+        public void Part(string channel)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
         /// Sends a message to a channel.
         /// </summary>
         /// <param name="channel">Channel to send the message to</param>
         /// <param name="message">Message to send</param>
         public void Message(string channel, string message) {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Sends a CTCP to a channel/user.
+        /// </summary>
+        /// <param name="chanusr">Channel/User to send the CTCP to</param>
+        /// <param name="ctcp">CTCP to send</param>
+        public void CTCP(string chanusr, string ctcp)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Sends a notice to a channel/user.
+        /// </summary>
+        /// <param name="chanusr">Channel/User to send the notice to</param>
+        /// <param name="notice">Notice to send</param>
+        public void Notice(string chanusr, string notice)
+        {
             throw new System.NotImplementedException();
         }
 
