@@ -157,7 +157,7 @@ namespace Literal {
         private async void ReadLoop() {
             // According to RFC2812, each IRC message must be within 512 characters
             // IRCv3 does 1024 (with tagging), so let's use 1024 base and split on \r\n
-            // But as our motto says "Trust is for the weak"
+            // Because like our motto says "Trust is for the weak"
             byte[] bytes = new byte[1024];
             string message = "";
             int read = -1;
