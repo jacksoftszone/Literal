@@ -205,29 +205,12 @@ namespace Literal {
                     //TODO tell the channel (when IrcChannel will exist)
                     break;
                 default:
-                    DebugErr("Unknown command: " + command.command + " in \r\n  " + command.ToString());
+                    Debug.Error("Unknown command: " + command.command + " in \r\n  " + command.ToString());
                     break;
             }
         }
-
-        private void DebugLog(string str) {
-#if DEBUG
-            System.ConsoleColor old = System.Console.ForegroundColor;
-            System.Console.ForegroundColor = System.ConsoleColor.White;
-            System.Console.WriteLine(str);
-            System.Console.ForegroundColor = old;
-#endif
-        }
-
-        private void DebugErr(string str) {
-#if DEBUG
-            System.ConsoleColor old = System.Console.ForegroundColor;
-            System.Console.ForegroundColor = System.ConsoleColor.Red;
-            System.Console.WriteLine(str);
-            System.Console.ForegroundColor = old;
-#endif
-        }
         #endregion
+
     }
 
 }
