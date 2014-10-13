@@ -238,6 +238,10 @@ namespace Literal {
                     if (isMe) {
                         channels.Add(target, new IrcChannel { name = target });
                     } else {
+                        if (!channels.ContainsKey(command.args[0])) {
+                            Debug.Log("Received join for a non existant channel");
+                            break;
+                        }
                         channels[target].Join(user);
                     }
                     //TODO tell the channel (when IrcChannel will exist)
@@ -280,11 +284,28 @@ namespace Literal {
                     //TODO MOTD handling (parse and save to IrcServer)
                     break;
 
-                case "331": // RPL_NOTOPIC / Channel Topic
-                case "332": // RPL_TOPIC
-                case "333": // RPL_TOPICWHOTIME
-                    //TODO Topic handling (delegate to IrcChannel)
+                case "331": // RPL_NOTOPIC / Empty topic (no need to do anything for now)
+                    if (channels.ContainsKey(command.args[0])) {
+                        Debug.Log("Received topic for an unrelated channel");
+                        break;
+                    }
                     break;
+
+                case "332": // RPL_TOPIC / Got topic
+                    if (channels.ContainsKey(command.args[0])) {
+                        Debug.Log("Received topic for an unrelated channel");
+                        break;
+                    }
+                    // Set topic
+                    if (command.text != null && command.text.Length > 0) {
+                        channels[command.args[0]].topic = command.text;
+                    }
+                    break;
+
+                case "333": // RPL_TOPICWHOTIME
+                    //TODO
+                    break;
+                    
 
                 case "353": // RPL_NAMREPLY / NAMES reply
                 case "366": // RPL_ENDOFNAMES
