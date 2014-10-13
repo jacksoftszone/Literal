@@ -365,29 +365,33 @@ namespace Literal {
                 case "ERROR":
                     Debug.Error("Got ERROR from server:\r\n " + command.text);
                     break;
-                case "404": // ERR_CANNOTSENDTOCHAN / due to chanmodes (+m with no grades) or +b and still on chan
-                case "405": // ERR_TOOMANYCHANNELS
+
                 case "411": // ERR_NORECIPIENT / command issued without a recipient, WHOIS and INVITE uses a different error, 431 and 461)
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 411, "No recipient given (" + command.command + ")");
                     }
                     break;
+
                 case "416": // ERR_QUERYTOOLONG
                     if (ServerError != null) {
                         ServerError(this, 416, "Too many lines in the output, restrict your query");
                     }
                     break;
+
                 case "421": // ERR_UNKNOWNCOMMAND
-                     if (ServerError != null) {
+                    if (ServerError != null) {
                         ServerError(this, 421, command.command + ": Unknown command");
                     }
                     break;
+
                 case "431": // ERR_NONICKNAMEGIVEN
-                     if (ServerError != null) {
+                    if (ServerError != null) {
                         ServerError(this, 431, "No nickname given");
                     }
                     break;
+
+                case "404": // ERR_CANNOTSENDTOCHAN / due to chanmodes (+m with no grades) or +b and still on chan
+                case "405": // ERR_TOOMANYCHANNELS
                 case "432": // ERR_ERRONEOUSNICKNAME
                     if (ServerError != null) {
                         int err;
