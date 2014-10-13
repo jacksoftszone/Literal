@@ -4,8 +4,8 @@
 
 `TL;DR` IRC client in C#/WPF for Windows
 
-Hi, We're [Hamcha](https://github.com/hamcha) and [Jacksoft](https://github.com/jacksoft)
-and we're sick of OS X getting all the good IRC clients, so we're making one for Windows.
+Hi, We're people from #jacksoftszone and we're sick of OS X getting all the good
+IRC clients, so we're making one for Windows.
 
 Its current design is to have a IRC library written not be compliant the RFC specs,
 but to survive even when in the worst IRC server made in human history
