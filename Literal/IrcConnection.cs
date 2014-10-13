@@ -46,6 +46,7 @@ namespace Literal {
 
         private TcpClient serverSocket;
         private NetworkStream serverStream;
+        private IrcUser me;
 
         #endregion
         #region Public methods / APIs
@@ -73,6 +74,7 @@ namespace Literal {
             serverStream = serverSocket.GetStream();
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
+            me = new IrcUser { nickname = nickname, identd = username, hostname = "", realname = realname };
             if (Connected != null) Connected(this);
             ReadLoop();
         }
@@ -81,7 +83,7 @@ namespace Literal {
         /// Sends a QUIT message and terminates the connection.
         /// </summary>
         /// <param name="exitMessage">Message to send along the QUIT command</param>
-        public async void Quit(string exitMessage) {
+        public async Task Quit(string exitMessage) {
             await Write("QUIT :" + exitMessage); ;
         }
 
@@ -89,7 +91,7 @@ namespace Literal {
         /// Joins a channel on the server
         /// </summary>
         /// <param name="channel">Channel to join, requires prefix (likely #)</param>
-        public async void Join(string channel) {
+        public async Task Join(string channel) {
             await Write("JOIN " + channel);
         }
 
@@ -97,8 +99,7 @@ namespace Literal {
         /// Part from channel on the server
         /// </summary>
         /// <param name="channel">Channel to part, requires prefix (likely #)</param>
-        public async void Part(string channel)
-        {
+        public async Task Part(string channel) {
             await Write("PART " + channel);
         }
 
@@ -107,7 +108,7 @@ namespace Literal {
         /// </summary>
         /// <param name="channel">Channel to send the message to</param>
         /// <param name="message">Message to send</param>
-        public async void Message(string channel, string message) {
+        public async Task Message(string channel, string message) {
             await Write("PRIVMSG " + channel + " :" + message);
         }
 
@@ -116,8 +117,7 @@ namespace Literal {
         /// </summary>
         /// <param name="chanusr">Channel/User to send the CTCP to</param>
         /// <param name="ctcp">CTCP to send</param>
-        public async void CTCP(string chanusr, string ctcp)
-        {
+        public async Task CTCP(string chanusr, string ctcp) {
             await Write("PRIVMSG " + chanusr + " :" + (char)1 + ctcp + (char)1);
         }
 
@@ -126,8 +126,7 @@ namespace Literal {
         /// </summary>
         /// <param name="chanusr">Channel/User to send the notice to</param>
         /// <param name="notice">Notice to send</param>
-        public async void Notice(string chanusr, string notice)
-        {
+        public async Task Notice(string chanusr, string notice) {
             await Write("NOTICE " + chanusr + " :" + notice);
         }
 
@@ -180,10 +179,36 @@ namespace Literal {
                     command.command = "PONG";
                     await Write("PONG :" + command.text);
                     break;
+                case "JOIN":
+                    // Get user
+                    IrcUser user = IrcUser.fromOrigin(command.origin);
+
+                    // Get joined channel
+                    string target = "";
+                    if (command.args != null && command.args.Length > 0)
+                        target = command.args[0];
+                    else if (command.text != null && command.text.Length > 0)
+                        target = command.text;
+
+                    // Call event if bound
+                    if (Joined != null)
+                        Joined(this, target, user.nickname == me.nickname);
+
+                    //TODO tell the channel (when IrcChannel will exist)
+                    break;
                 default:
                     DebugErr("Unknown command: " + command.command + " in \r\n  " + command.ToString());
                     break;
             }
+        }
+
+        private void DebugLog(string str) {
+#if DEBUG
+            System.ConsoleColor old = System.Console.ForegroundColor;
+            System.Console.ForegroundColor = System.ConsoleColor.White;
+            System.Console.WriteLine(str);
+            System.Console.ForegroundColor = old;
+#endif
         }
 
         private void DebugErr(string str) {
