@@ -372,6 +372,15 @@ namespace Literal {
                 case "421": // ERR_UNKNOWNCOMMAND
                 case "431": // ERR_NONICKNAMEGIVEN
                 case "432": // ERR_ERRONEOUSNICKNAME
+                    if (ServerError != null) {
+                        int err;
+                        bool errconv = int.TryParse(command.command, out err);
+                        if (errconv) {
+                            ServerError(this, err, "Got error: " + command.command);
+                        }
+                    }
+                    break;
+
                 case "433": // Nickname in use
                     if (randomNickIfTaken) {
                         Random rnd = new Random();
@@ -382,7 +391,11 @@ namespace Literal {
                         }
                     }
                     break;
+
                 case "437": //ERR_BANNICKCHANGE / attempt to change nick while banned on a chan
+                    if (ServerError != null) {
+                        ServerError(this, 437, "You can't change nick while banned");
+                    }
                     break;
 
                 #endregion
