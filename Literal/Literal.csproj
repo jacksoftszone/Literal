@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Debug.cs" />
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcCommand.cs" />
     <Compile Include="IrcUser.cs" />
