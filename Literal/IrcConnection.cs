@@ -258,9 +258,18 @@ namespace Literal {
 
                 case "353": // RPL_NAMREPLY / NAMES reply
                 case "366": // RPL_ENDOFNAMES
-                    //TODO Userlist handling (delegate to IrcChannel)
+                    //TODO User list handling (delegate to IrcChannel)
                     break;
 
+                #endregion
+                #region Server errors
+
+                case "ERROR":
+                    Debug.Error("Got ERROR from server:\r\n " + command.text);
+                    break;
+
+                case "433": // Nickname in use
+                
                 #endregion
 
                 default:
