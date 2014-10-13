@@ -11,7 +11,7 @@ namespace TestBot {
         //const string serverAddr = "192.168.46.100";
         const string serverAddr = "irc.azzurra.org";
         const int serverPort = 6667;
-        const bool closeOnQuit = true;
+        const bool closeOnQuit = false;
 
         static bool hasFinished = false;
 
