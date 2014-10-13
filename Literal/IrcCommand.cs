@@ -39,7 +39,7 @@ namespace Literal {
 
             // Get args
             int argsEnd = message.IndexOf(" :");
-            string[] argmsg = message.Split(new string[]{" :"}, 2, StringSplitOptions.None);
+            string[] argmsg = message.Substring(commandEnd+1).Split(new string[]{" :"}, 2, StringSplitOptions.None);
             args = argmsg[0].Split(' ');
 
             // Check if there is a text part and get it
@@ -49,10 +49,10 @@ namespace Literal {
 
         public override string ToString() {
             string final = "";
-            if (origin.Length > 0) final += ":" + origin + " ";
+            if (origin != null && origin.Length > 0) final += ":" + origin + " ";
             final += command;
-            if (args.Length > 0) final += " " + string.Join(" ", args);
-            if (text.Length > 0) final += " :" + text;
+            if (args != null && args.Length > 0) final += " " + string.Join(" ", args);
+            if (text != null && text.Length > 0) final += " :" + text;
             return final;
         }
     }
