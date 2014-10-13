@@ -3,7 +3,6 @@
 // Refer to the LICENSE.txt file included.
 
 using Literal;
-using System.Threading.Tasks;
 
 namespace TestBot {
     class Program {

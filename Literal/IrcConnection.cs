@@ -130,6 +130,14 @@ namespace Literal {
             await Write("NOTICE " + chanusr + " :" + notice);
         }
 
+        /// <summary>
+        /// Writes a raw message on the IRC network stream
+        /// </summary>
+        /// <param name="message">Message to write</param>
+        public async Task Raw(string message) {
+            await Write(message);
+        }
+
         #endregion
         #region Private methods
         private async Task Write(string command) {
