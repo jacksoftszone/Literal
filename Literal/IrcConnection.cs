@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
+using System;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -130,6 +131,15 @@ namespace Literal {
         /// <param name="notice">Notice to send</param>
         public async Task Notice(string chanusr, string notice) {
             await Write("NOTICE " + chanusr + " :" + notice);
+        }
+
+        /// <summary>
+        /// Set a new nickname.
+        /// </summary>
+        /// <param name="newnick">The new nick name to be set</param>
+        public async Task Nick(string newnick)
+        {
+            await Write("NICK " + newnick);
         }
 
         /// <summary>
@@ -269,6 +279,11 @@ namespace Literal {
                     break;
 
                 case "433": // Nickname in use
+                    // Future option (maybe): "Generate a random nick when the current is not available"
+                    Random rnd = new Random();
+                    int nr = rnd.Next();
+                    await Nick(me + rnd.Next(000, 999).ToString());
+                    break;
                 
                 #endregion
 
