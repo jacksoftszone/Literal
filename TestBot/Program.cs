@@ -9,7 +9,8 @@ namespace TestBot {
     class Program {
         static IrcConnection server;
 
-        const string serverAddr = "ugo.darkspirit.org";
+        //const string serverAddr = "192.168.46.100";
+        const string serverAddr = "irc.azzurra.org";
         const int serverPort = 6667;
 
         static bool hasFinished = false;
@@ -27,11 +28,13 @@ namespace TestBot {
                 conn.Join("#jcslab");
             };
 
+#if DEBUG
             server.RawMessage += (_, msg) => {
-                System.Console.WriteLine("> " + msg);
+                System.Console.WriteLine("-> " + msg);
             };
+#endif
 
-            Task s = server.Connect("TestLit", "test", "Testing bot");
+            Task s = server.Connect("TestLit", "myuser", "Testing bot");
             while (!hasFinished) ;
         }
     }

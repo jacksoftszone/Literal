@@ -71,8 +71,8 @@ namespace Literal {
             serverSocket = new TcpClient();
             await serverSocket.ConnectAsync(serverInfo.address, serverInfo.port);
             serverStream = serverSocket.GetStream();
-            await Write("USER " + username + " 0 * :" + realname);
             await Write("NICK " + nickname);
+            await Write("USER " + username + " 8 * :" + realname);
             await ReadLoop();
         }
 
@@ -107,6 +107,10 @@ namespace Literal {
             // Prepare command for being written
             byte[] utfstring = Encoding.UTF8.GetBytes(command + "\r\n");
 
+#if DEBUG
+            System.Console.WriteLine("<- " + command);
+#endif
+
             // Write to network stream
             await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
         }
@@ -134,10 +138,32 @@ namespace Literal {
                     string trimMessage = msg.TrimEnd(trimChar);
                     if (RawMessage != null) RawMessage(this, trimMessage);
                     IrcCommand command = new IrcCommand(trimMessage);
+                    await Handle(command);
                 }
                 
                 message = "";
             }
+        }
+
+        private async Task Handle(IrcCommand command) {
+            switch (command.command) {
+                case "PING":
+                    command.command = "PONG";
+                    await Write("PONG :" + command.text);
+                    break;
+                default:
+                    DebugErr("Unknown command: " + command.command + " in \r\n  " + command.ToString());
+                    break;
+            }
+        }
+
+        private void DebugErr(string str) {
+#if DEBUG
+            System.ConsoleColor old = System.Console.ForegroundColor;
+            System.Console.ForegroundColor = System.ConsoleColor.Red;
+            System.Console.WriteLine(str);
+            System.Console.ForegroundColor = old;
+#endif
         }
         #endregion
     }
