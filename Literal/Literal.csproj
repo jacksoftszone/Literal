@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Debug.cs" />
+    <Compile Include="IrcChannel.cs" />
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcCommand.cs" />
     <Compile Include="IrcServer.cs" />

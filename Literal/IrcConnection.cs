@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -43,11 +44,12 @@ namespace Literal {
         }
 
         public ServerConnectionInfo serverConnInfo { get; private set; }
+        public IrcServer serverInfo { get; private set; }
+        public Dictionary<string, IrcChannel> channels { get; private set; }
 
         private TcpClient serverSocket;
         private NetworkStream serverStream;
         private IrcUser me;
-        private IrcServer serverInfo;
 
         #endregion
         #region Public methods / APIs
@@ -58,9 +60,12 @@ namespace Literal {
         /// <param name="serverPort">Port to connect to</param>
         /// <param name="useSSL">Is SSL used? (not implemented yet)</param>
         public IrcConnection(string serverAddress, int serverPort, bool useSSL = false) {
-            if (useSSL) throw new System.NotImplementedException();
+            if (useSSL) {
+                throw new System.NotImplementedException();
+            }
             serverConnInfo = new ServerConnectionInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
             serverInfo = new IrcServer { host = serverAddress };
+            channels = new Dictionary<string, IrcChannel>();
         }
 
         /// <summary>
@@ -77,7 +82,9 @@ namespace Literal {
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
             me = new IrcUser { nickname = nickname, identd = username, hostname = "", realname = realname };
-            if (Connected != null) Connected(this);
+            if (Connected != null) {
+                Connected(this);
+            }
             ReadLoop();
         }
 
@@ -168,7 +175,9 @@ namespace Literal {
                 message += decoded;
 
                 // Message longer than 1024 characters, get the rest
-                if (message.IndexOf("\n") < 0) continue;
+                if (message.IndexOf("\n") < 0) {
+                    continue;
+                }
 
                 // Get the messages we got so far, leave the rest
                 string[] messages = message.Split('\n');
@@ -176,7 +185,9 @@ namespace Literal {
 
                 foreach (string msg in messages.Take(messages.Length - 1)) {
                     string trimMessage = msg.TrimEnd(trimChar);
-                    if (RawMessage != null) RawMessage(this, trimMessage);
+                    if (RawMessage != null) {
+                        RawMessage(this, trimMessage);
+                    }
                     IrcCommand command = new IrcCommand(trimMessage);
                     await Handle(command);
                 }
@@ -198,18 +209,27 @@ namespace Literal {
                 case "JOIN":
                     // Get user
                     IrcUser user = IrcUser.fromOrigin(command.origin);
+                    bool isMe = user.nickname == me.nickname;
 
                     // Get joined channel
                     string target = "";
-                    if (command.args != null && command.args.Length > 0)
+                    if (command.args != null && command.args.Length > 0) {
                         target = command.args[0];
-                    else if (command.text != null && command.text.Length > 0)
+                    } else if (command.text != null && command.text.Length > 0) {
                         target = command.text;
+                    }
 
                     // Call event if bound
-                    if (Joined != null)
-                        Joined(this, target, user.nickname == me.nickname);
+                    if (Joined != null) {
+                        Joined(this, target, isMe);
+                    }
 
+                    // We joined, create channel
+                    if (isMe) {
+                        channels.Add(target, new IrcChannel { name = target });
+                    } else {
+                        channels[target].Join(user);
+                    }
                     //TODO tell the channel (when IrcChannel will exist)
                     break;
 
@@ -269,7 +289,7 @@ namespace Literal {
                     break;
 
                 case "433": // Nickname in use
-                
+
                 #endregion
 
                 default:
