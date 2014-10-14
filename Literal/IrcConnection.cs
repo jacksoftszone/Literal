@@ -366,7 +366,39 @@ namespace Literal {
                     Debug.Error("Got ERROR from server:\r\n " + command.text);
                     break;
 
-                case "411": // ERR_NORECIPIENT / command issued without a recipient, WHOIS and INVITE uses a different error, 431 and 461)
+                case "401": // ERR_NOSUCHNICK / The specified nick doesn't exist
+                    if (ServerError != null) {
+                        ServerError(this, 401, "No such nick");
+                    }
+                    break;
+
+                case "402": // ERR_NOSUCHSERVER / The specified server doesn't exist (Untested)
+                    if (ServerError != null) {
+                        ServerError(this, 402, "No such server");
+                    }
+                    break;
+
+                case "403": // ERR_NOSUCHCHANNEL / The specified channel doesn't exist (Probably not used. Tested on Azzurra only, must do other tests)
+                    if (ServerError != null) {
+                        ServerError(this, 403, "No such channel");
+                    }
+                    break;
+
+                case "404": // ERR_CANNOTSENDTOCHAN / Due to chanmodes (+m with no grades) or +b and still on chan
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 404, "Cannot send to channel"); // To be completed (Need to add which channel on the end of the string).
+                    }
+                    break;
+
+                case "405": // ERR_TOOMANYCHANNELS / Too manu opened channels.
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 405, "Too many opened channels");
+                    }
+                    break;
+
+                case "411": // ERR_NORECIPIENT / Command issued without a recipient, WHOIS and INVITE uses a different error, 431 and 461
                     if (ServerError != null) {
                         ServerError(this, 411, "No recipient given (" + command.command + ")");
                     }
@@ -390,8 +422,6 @@ namespace Literal {
                     }
                     break;
 
-                case "404": // ERR_CANNOTSENDTOCHAN / due to chanmodes (+m with no grades) or +b and still on chan
-                case "405": // ERR_TOOMANYCHANNELS
                 case "432": // ERR_ERRONEOUSNICKNAME
                     if (ServerError != null) {
                         int err;
@@ -402,7 +432,7 @@ namespace Literal {
                     }
                     break;
 
-                case "433": // Nickname in use
+                case "433": // ERR_NICKNAMEINUSE / Nickname in use
                     if (randomNickIfTaken) {
                         Random rnd = new Random();
                         await Nick(me + rnd.Next(000, 999).ToString());
@@ -413,9 +443,44 @@ namespace Literal {
                     }
                     break;
 
-                case "437": //ERR_BANNICKCHANGE / attempt to change nick while banned on a chan
+                case "437": // ERR_BANNICKCHANGE / Attempt to change nick while banned on a chan
                     if (ServerError != null) {
                         ServerError(this, 437, "You can't change nick while banned");
+                    }
+                    break;
+
+                case "471": // ERR_CHANNELISFULL / For example, when there's the mode +l and the channel is already full
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 471, "Channel is full");
+                    }
+                    break;
+
+                case "473": // ERR_INVITEONLYCHAN / The channel is invite only
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 473, "This channel is invite only"); // To be completed (Need specify channel).
+                    }
+                    break;
+
+                case "474": // ERR_BANNEDFROMCHAN / Cannot join on a channel while you're banned on it.
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 474, "You are banned from this channel"); // To be completed (Need specify channel).
+                    }
+                    break;
+
+                case "475": // ERR_BADCHANNELKEY / Keyword to join that channel is incorrect
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 475, "The keyword for this channel is incorrect"); // To be completed (Need specify channel).
+                    }
+                    break;
+
+                case "478": // ERR_BANLISTFULL / Ban list on that channel is full, cannot add more bans.
+                    if (ServerError != null)
+                    {
+                        ServerError(this, 478, "The banlist is full"); // To be completed (Need specify channel).
                     }
                     break;
 
