@@ -1,4 +1,8 @@
-﻿namespace Literal {
+﻿// Copyright 2014 #jacksoftszone
+// Licensed under GPLv3
+// Refer to the LICENSE.txt file included.
+
+namespace Literal {
     class Debug {
         public static void Log(string str) {
 #if DEBUG

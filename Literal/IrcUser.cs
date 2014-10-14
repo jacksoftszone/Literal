@@ -1,4 +1,8 @@
-﻿namespace Literal {
+﻿// Copyright 2014 #jacksoftszone
+// Licensed under GPLv3
+// Refer to the LICENSE.txt file included.
+
+namespace Literal {
     public class IrcUser {
         public string nickname;
         public string identd;
