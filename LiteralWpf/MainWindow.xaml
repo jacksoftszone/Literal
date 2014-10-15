@@ -10,15 +10,15 @@
             <ColumnDefinition Width="160"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="24"/>
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel x:Name="ChatContainer" Grid.Column="1" Grid.Row="2" Background="#FF222222"/>
-        <StackPanel x:Name="ServerTree" Grid.Row="2" Background="#FF333333"/>
-        <StackPanel x:Name="UserContainer" Grid.Column="2" Grid.Row="2" Background="#FF333333"/>
-        <Label Content="Topic goes here" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF2A2A2A" Foreground="#FF878787" Grid.Row="1"/>
+        <StackPanel x:Name="ServerTree" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2"/>
+        <StackPanel x:Name="UserContainer" Grid.Column="2" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2"/>
+        <Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF282828" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro"/>
         <Menu Background="{x:Null}" BorderThickness="2,2,0,0" Panel.ZIndex="1">
         	<MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
         		<MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
@@ -28,8 +28,8 @@
 			<MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False">
         	</MenuItem>
         </Menu>
-        <Label Content="- Literal -" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="472" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" FontSize="14.667" Padding="0"/>
-        <TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="#FF444444" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" Text="Input message here…" FontSize="13.333" />
+        <Label Content="- LITERAL -" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" Padding="0" FontFamily="/LiteralWpf;component/Fonts/#Lato" BorderThickness="0" Margin="0"/>
+        <TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="{x:Null}" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" FontSize="13.333" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" />
     </Grid>
 	<control:FramelessWindow.Resources>
 		<Style TargetType="TextBox">
@@ -52,12 +52,12 @@
 								Value="0.56"/>
 					  </Trigger>
 					  <Trigger Property="UIElement.IsMouseOver" Value="True">
-						<Setter Property="Border.BorderBrush" TargetName="border" 
-								Value="#FF666666"/>
+						<Setter Property="Border.Background" TargetName="border" 
+								Value="#FF181818"/>
 					  </Trigger>
 					  <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
-						<Setter Property="Border.BorderBrush" TargetName="border" 
-							   Value="#FF888888"/>
+						<Setter Property="Border.Background" TargetName="border" 
+							   Value="#FF111111"/>
 					  </Trigger>
 				   </ControlTemplate.Triggers>
 				</ControlTemplate>

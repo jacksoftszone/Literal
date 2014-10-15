@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 // Refer to the LICENSE.txt file included.
 
+using Literal;
 using System.Windows;
 
 namespace LiteralWpf

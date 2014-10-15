@@ -67,7 +67,7 @@
                                     </AdornerDecorator>
                                 </Grid>
 								<Rectangle x:Name="dragzone" Fill="Transparent" Grid.Row="0" Grid.Column="1" />
-                                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="2" Height="20" >
+                                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="2" Height="22" >
                                     <Button x:Name="tbar_minimize" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="tbar_restore" Style="{StaticResource WindowButtonStyle}"
