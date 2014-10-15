@@ -13,7 +13,7 @@
             <RowDefinition Height="24"/>
             <RowDefinition Height="24"/>
             <RowDefinition/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel x:Name="ChatContainer" Grid.Column="1" Grid.Row="2" Background="#FF222222"/>
         <StackPanel x:Name="ServerTree" Grid.Row="2" Background="#FF333333"/>
@@ -29,5 +29,40 @@
         	</MenuItem>
         </Menu>
         <Label Content="- Literal -" Grid.Column="1" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="472" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" FontSize="14.667" Padding="0"/>
+        <TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="#FF444444" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" Text="Input message here…" FontSize="13.333" />
     </Grid>
+	<control:FramelessWindow.Resources>
+		<Style TargetType="TextBox">
+			<Setter Property="Template">
+			   <Setter.Value>
+				  <ControlTemplate TargetType="TextBox">
+					  <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+							  BorderBrush="{TemplateBinding Border.BorderBrush}"
+							  Background="{TemplateBinding Panel.Background}"
+							  Name="border"
+							  SnapsToDevicePixels="True">
+						 <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+									   VerticalScrollBarVisibility="Hidden"
+									   Name="PART_ContentHost"
+									   Focusable="False" />
+					  </Border>
+				   <ControlTemplate.Triggers>
+					  <Trigger Property="UIElement.IsEnabled" Value="False">
+						<Setter Property="UIElement.Opacity" TargetName="border"
+								Value="0.56"/>
+					  </Trigger>
+					  <Trigger Property="UIElement.IsMouseOver" Value="True">
+						<Setter Property="Border.BorderBrush" TargetName="border" 
+								Value="#FF666666"/>
+					  </Trigger>
+					  <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
+						<Setter Property="Border.BorderBrush" TargetName="border" 
+							   Value="#FF888888"/>
+					  </Trigger>
+				   </ControlTemplate.Triggers>
+				</ControlTemplate>
+			  </Setter.Value>
+			</Setter>
+		 </Style>
+	</control:FramelessWindow.Resources>
 </control:FramelessWindow>
