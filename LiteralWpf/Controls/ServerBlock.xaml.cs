@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Copyright 2014 #jacksoftszone
+// Licensed under GPLv3
+// Refer to the LICENSE.txt file included.
 
-namespace LiteralWpf
-{
-	/// <summary>
-	/// Interaction logic for ServerBlock.xaml
-	/// </summary>
-	public partial class ServerBlock : UserControl
-	{
-		public ServerBlock()
-		{
-			this.InitializeComponent();
-		}
-	}
+using System.ComponentModel;
+using System.Windows.Controls;
+
+namespace LiteralWpf.Controls {
+    public partial class ServerBlock : UserControl {
+
+        public new string Name;
+
+        public ServerBlock() {
+            this.InitializeComponent();
+        }
+    }
 }

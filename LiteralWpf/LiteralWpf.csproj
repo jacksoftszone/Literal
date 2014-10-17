@@ -41,6 +41,10 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\ChannelButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\ServerBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -52,6 +56,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\ChannelButton.xaml.cs">
+      <DependentUpon>ChannelButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FramelessWindow.cs" />
     <Compile Include="Controls\ServerBlock.xaml.cs">
@@ -220,15 +227,23 @@
     </BlendEmbeddedFont>
   </ItemGroup>
   <ItemGroup>
-    <BlendEmbeddedFont Include="Fonts\Lato-Hairline.ttf">
+    <BlendEmbeddedFont Include="Fonts\Lato-Light.ttf">
       <IsSystemFont>True</IsSystemFont>
       <All>True</All>
       <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\Lato-HairlineItalic.ttf">
+    <BlendEmbeddedFont Include="Fonts\Lato-LightItalic.ttf">
       <IsSystemFont>True</IsSystemFont>
       <All>True</All>
       <AutoFill>True</AutoFill>
+      <Uppercase>True</Uppercase>
+      <Lowercase>True</Lowercase>
+      <Numbers>True</Numbers>
+      <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

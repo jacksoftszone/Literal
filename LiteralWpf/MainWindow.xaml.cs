@@ -3,6 +3,7 @@
 // Refer to the LICENSE.txt file included.
 
 using Literal;
+using LiteralWpf.Controls;
 using System.Windows;
 
 namespace LiteralWpf

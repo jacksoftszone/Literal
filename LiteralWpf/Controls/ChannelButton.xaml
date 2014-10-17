@@ -1,0 +1,15 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="LiteralWpf.Controls.ChannelButton"
+	x:Name="ChannelButtonControl"
+	d:DesignWidth="150" Height="35" FontSize="16" FontFamily="/LiteralWpf;component/Fonts/#Lato">
+
+	<Grid x:Name="LayoutRoot" Margin="3">
+		<Label x:Name="ChannelName" Content="ChanName" Padding="20,3,3,3" BorderThickness="1" BorderBrush="#FFD6D6D6" Foreground="Gainsboro" Margin="0,0,0,0"/>
+		<Label x:Name="ChannelPrefix" Content="#" HorizontalAlignment="Left" Width="20" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" FontWeight="Bold" FontSize="21.333" Padding="5,0,0,0" Foreground="#FFEEEEEE"/>
+	</Grid>
+</UserControl>
