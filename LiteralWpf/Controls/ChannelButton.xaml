@@ -6,10 +6,10 @@
 	mc:Ignorable="d"
 	x:Class="LiteralWpf.Controls.ChannelButton"
 	x:Name="ChannelButtonControl"
-	d:DesignWidth="150" Height="35" FontSize="16" FontFamily="/LiteralWpf;component/Fonts/#Lato">
+	d:DesignWidth="150" Height="27" FontSize="16" FontFamily="/LiteralWpf;component/Fonts/#Lato">
 
-	<Grid x:Name="LayoutRoot" Margin="3">
-		<Label x:Name="ChannelName" Content="ChanName" Padding="20,3,3,3" BorderThickness="1" BorderBrush="#FFD6D6D6" Foreground="Gainsboro" Margin="0,0,0,0"/>
-		<Label x:Name="ChannelPrefix" Content="#" HorizontalAlignment="Left" Width="20" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" FontWeight="Bold" FontSize="21.333" Padding="5,0,0,0" Foreground="#FFEEEEEE"/>
+	<Grid x:Name="LayoutRoot" Margin="5,2,2,1">
+		<Label x:Name="ChannelName" Content="ChanName" Padding="20,3,2,3" BorderThickness="1" BorderBrush="#FF444444" Foreground="#FF888888" Margin="0,0,0,0" FontSize="13.333"/>
+		<Label x:Name="ChannelPrefix" Content="#" HorizontalAlignment="Left" Width="20" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" FontSize="21.333" Padding="5,0,0,0" Foreground="#FF555555" FontWeight="Bold" Margin="0,-2,0,0"/>
 	</Grid>
 </UserControl>
