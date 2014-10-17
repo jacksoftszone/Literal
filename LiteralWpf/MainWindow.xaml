@@ -51,21 +51,21 @@
 			<RowDefinition Height="40"/>
 		</Grid.RowDefinitions>
 		<StackPanel x:Name="ChatContainer" Grid.Column="1" Grid.Row="2" Background="#FF222222"/>
-		<Border Grid.Row="1" Grid.RowSpan="2"  Background="#7F1F1F1F" BorderThickness="0,0,1,0" BorderBrush="#7F000000">
+		<Border Grid.Row="1" Grid.RowSpan="2"  Background="#7F1F1F1F" BorderThickness="0" BorderBrush="#7F000000">
 			<StackPanel x:Name="ServerTree">
-				<lit:ServerBlock>
-                    <lit:ChannelButton />
+				<lit:ServerBlock Title="Test block">
+                    <lit:ChannelButton ChanName="#testchan" />
 				</lit:ServerBlock>
-                <lit:ServerBlock>
-                    <lit:ChannelButton />
-                    <lit:ChannelButton />
+                <lit:ServerBlock Title="Lol internet">
+                    <lit:ChannelButton ChanName="#jacksoft:OO" />
+                    <lit:ChannelButton ChanName="#nomatimoncioe" />
                 </lit:ServerBlock>
 			</StackPanel>
 		</Border>
-        <Border Grid.Column="2" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2" BorderThickness="1,0,0,0" BorderBrush="#7F000000">
+        <Border Grid.Column="2" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2" BorderThickness="0" BorderBrush="#7F000000">
 		    <StackPanel x:Name="UserContainer" />
         </Border>
-		<Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF282828" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" BorderThickness="0,0,0,1" BorderBrush="#7F000000"/>
+		<Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF111111" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" BorderThickness="0,0,0,1" BorderBrush="#7F000000"/>
 		<Menu Background="{x:Null}" BorderThickness="2,2,0,0" Panel.ZIndex="1">
 			<MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
 				<MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>

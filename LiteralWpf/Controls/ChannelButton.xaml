@@ -9,7 +9,7 @@
 	d:DesignWidth="150" Height="27" FontSize="16" FontFamily="/LiteralWpf;component/Fonts/#Lato">
 
 	<Grid x:Name="LayoutRoot" Margin="5,2,2,1">
-		<Label x:Name="ChannelName" Content="ChanName" Padding="20,3,2,3" BorderThickness="1" BorderBrush="#FF444444" Foreground="#FF888888" Margin="0,0,0,0" FontSize="13.333"/>
-		<Label x:Name="ChannelPrefix" Content="#" HorizontalAlignment="Left" Width="20" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" FontSize="21.333" Padding="5,0,0,0" Foreground="#FF555555" FontWeight="Bold" Margin="0,-2,0,0"/>
+		<Label x:Name="ChannelName" Content="{Binding ChannelNameText}" Padding="20,3,2,3" BorderThickness="1" BorderBrush="#FF444444" Foreground="#FF888888" Margin="0,0,0,0" FontSize="13.333"/>
+		<Label x:Name="ChannelPrefix" Content="{Binding ChannelPrefixText}" HorizontalAlignment="Left" Width="20" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" FontSize="21.333" Padding="5,0,0,0" Foreground="#FF555555" FontWeight="Bold" Margin="0,-2,0,0"/>
 	</Grid>
 </UserControl>
