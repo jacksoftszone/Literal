@@ -70,8 +70,8 @@
 			<MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
 				<MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
 			</MenuItem>
-			<MenuItem Header="_SETTINGS" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
-			<MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
+            <MenuItem Header="_SETTINGS" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
+            <MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
 		</Menu>
 		<Label Content="- LITERAL -" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" Padding="0" FontFamily="/LiteralWpf;component/Fonts/#Lato" BorderThickness="0" Margin="0"/>
 		<TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="{x:Null}" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" FontSize="13.333" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" />
