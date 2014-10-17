@@ -26,9 +26,9 @@
         </Setter>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontFamily" Value="Webdings"/>
-        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontSize" Value="17" />
         <Setter Property="Foreground" Value="#FFAAAAAA" />
-        <Setter Property="Margin" Value="0,2,3,0"/>
+        <Setter Property="Margin" Value="2,0,0,0"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="Gray" />
@@ -58,7 +58,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="160"/>
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="73"/>
+                                    <ColumnDefinition Width="67"/>
                                 </Grid.ColumnDefinitions>
 								<Grid Background="{TemplateBinding Background}"
                                            Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="0,0,0,0">
@@ -67,7 +67,7 @@
                                     </AdornerDecorator>
                                 </Grid>
 								<Rectangle x:Name="dragzone" Fill="Transparent" Grid.Row="0" Grid.Column="1" />
-                                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="2" Height="22" >
+                                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="0,1,0,0" Height="22" >
                                     <Button x:Name="tbar_minimize" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="tbar_restore" Style="{StaticResource WindowButtonStyle}"
