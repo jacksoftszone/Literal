@@ -278,9 +278,12 @@ namespace Literal {
                 #endregion
                 #region Server messages
 
-                case "001": // Welcome messages
-                case "002":
-                case "003":
+                //TODO: Some of these commands may require an administrator/ircop level, we should check which ones and keep in mind that in case
+                //the user doesn't have the required privileges, the returned message will be different (e.g. "Permission Denied, You do not have the correct irc operator privileges"
+                //and this could potentitally break the parsing.
+                case "001": // RPL_WELCOME / Welcome messages, format: "Welcome to the Internet Relay Network, <nick>!<user>@<host>"
+                case "002": // RPL_YOURHOST / Host message, format: "Your host is <servername>, running version <ver>"
+                case "003": // RPL_CREATED / Date and Time the server was created, format: "This server was created <date>"
                     break;
 
                 case "004": // Server info
@@ -297,17 +300,139 @@ namespace Literal {
                     break;
 
                 case "005": // RPL_ISUPPORT / Capabilities
+                    //NOTE: RFC2812 says this could also be the RPL_BOUNCE (suggests an alternative server i.e. the one we're connecting is already full)
+                    //and on Undernet could also be used for the MAP command.
                     //TODO Parse capabilities
                     break;
-
-                case "251": // RPL_LUSERCLIENT / List user result
-                case "252": // RPL_LUSEROP
-                case "253": // RPL_LUSERUNKNOWN
-                case "254": // RPL_LUSERCHANNELS
-                case "255": // RPL_LUSERME
-                case "265": // RPL_LOCALUSERS
-                case "266": // RPL_GLOBALUSERS
+                case "007": // RPL_MAPEND / End of /MAP command, format "End of /MAP"
+                    //NOTE: this seems to be an Undernet only message code, should we care?
+                    break;
+                case "008": // RPL_NOMASK / Server notice mask, format: "<number> :: Server notice mask (<hex>)"
+                    //again, this is Undernet only, act as an extension to the +s User mode, to filter which server notices are sent to the user.
+                    break;
+                case "200": // RPL_TRACELINK / sent in response to the /trace command and has to pass it to another server, should require IrcOp privileges. 
+                    //NOTE: the same privilege level requirement should applies to all the messages in the range 200-209
+                    //Multiple parameteres, format: "Link <version/debug level> <dest> <next server> v<protocol version> <uptime in sec> <backstream> <upstream>"
+                    break;
+                case "201": // RPL_TRACECONNECTING / format: "Try. <class> <server>"
+                    // used for connections not fully estabilished and still attempting to connect to the server.
+                    break;
+                case "202": // RPL_TRACEHANDSHAKE / format: "H.S. <class> <server>"
+                    // used for connections not fully estabilished and completing the handshake with the server.
+                    break;
+                case "203": // RPL_TRACEUNKNOWN / format: "<class> <client IP, dot form>
+                    // used for connections not fully estabilished but in an unknown state.
+                    break;
+                case "204": // RPL_TRACEOPERATOR / format: "Oper <class> <nick>"
+                    break;
+                case "205": // RPL_TRACEUSER / format: "User <class> <nick>"
+                    break;
+                case "206": // RPL_TRACESERVER / format: "Serv <class> <int>S <int>C <server> <nick!user>OR<*!*>@<host>OR<server> V<protocol version>
+                    break;
+                case "207": // RPL_TRACESERVICE / format: "Service <class> <name> <type> <active type>
+                    break;
+                case "208": // RPL_TRACENEWTYPE / format: "<newtype> 0 <clientname>
+                    //for connections that doesn't fit any other type.
+                    break;
+                case "209": // RPL_TRACECLASS / format: "Class <class> <count>"
+                    break;
+                case "211": // RPL_STATSLINKINFO / format: "<connection> <sendq> <sentmsg> <sentbyte> <recdmsg> <recdbyte> :<open>
+                    //sent as a reply to a "/stats l" request
+                    //other IRCds might reply with a different format, and many of them could send a header line before the actual reply (mind for parsing).
+                    break;
+                case "212": // RPL_STATSCOMMANDS / format: "<command> <uses> <bytes>"
+                    //sent as a reply to a "/stats m" request
+                    break;
+                case "213": // RPL_STATSCLINE / format: "C <address> * <server> <port> <class>"
+                    //sent as a reply to a "stats c" request. NOTE: reply could contain many lines.
+                    break;
+                case "214": // RPL_STATSNLINE / format: "N <address> * <server> <port> <class>"
+                    //sent as a reply to a "stats n" request. NOTE: reply could contain many lines.
+                    break;
+                case "215": // RPL_STATSILINE / format: "I <mask> * <hostmask> <port> <class>"
+                    //sent as a reply to a "stats i" request. NOTE: reply could contain many lines.
+                    // I-lines: list of clients allowed to connect to the IRC server.
+                    break;
+                case "216": // RPL_STATSKLINE / format: "K <address> * <username> <details>"
+                    //sent as a reply to a "stats k" request. NOTE: reply could contain many lines.
+                    // K-lines: list of clients NOT allowed to connect to the IRC server.
+                    break;
+                case "217": // RPL_STATSPLINE / format: "P <port> <int> <hex>"
+                    //sent as a reply to a "stats p" request. NOTE: reply could contain many lines.
+                    // P-lines: list of ports on which clients are allowed to connect to the IRC server.
+                    // NOTE: looks like only a few networks (e.g. Undernet) supports this.
+                    break;
+                case "218": // RPL_STATSYLINE / format: "Y <class> <ping> <freq> <maxconnect> <sendq>"
+                    //sent as a reply to a "stats y" request. NOTE: reply could contain many lines.
+                    // K-lines: details about a connection class and the privileges (e.g. I-lines, C-lines etc.)
+                    break;
+                case "219": // RPL_ENDOFSTATS / format: "<char> :End of /STATS report", <char> is the type of stats requested.
+                    //sent as the last message after a "/stats" request. If the stats request isn't recognized or supported,
+                    // char will be an asterisk (*)
+                    break;
+                case "221": // RPL_UMODEIS / format: "<mode>", sent after a request to view the usermode using the "mode" command.
+                    break;
+                case "222": // RPL_SQLINE_NICK / not in RFC, used for DALnet services ("stats q") and EFnet ("stats b"), not sure if we should care.
+                    break;
+                case "223": // RPL_STATS_E / not in RFC, used by EFnet ("stats e")
+                    break;
+                case "224": //RPL_STATS_D / not in RFC, used by EFnet ("stats d")
+                    break;
+                case "241": //RPL_STATSLLINE / format: "L <address> * <server> <int> <int>"
+                    //sent in reply to a "/stats h" request, both 241, 244 and 245 may be returned.
+                    break;
+                case "242": //RPL_STATSUPTIME / format: "Server Up <int> days, <time>"
+                    //sent in reply to a "/stats u" request.
+                    break;
+                case "243": //RPL_STATSOLINE / format: "O <mask> <password> <user> <number> <class>"
+                    //sent in reply to a "/stats o" request.
+                    // O-lines: details which hosts are allowed to become IRCOps
+                    break;
+                case "244": //RPL_STATSHLINE / format: "H <address> * <server> <int> <int>"
+                    //sent in reply to a "/stats h" request, both 241, 244 and 245 may be returned.
+                    break;
+                case "245": //RPL_STATSSLINE / format: "S <address> * <server> <int>"
+                    //sent in reply to a "/stats s" request.
+                    break;
+                case "246": //RPL_STATSGLINE / format: "G <address> <timestamp> :<reason>"
+                    //sent in reply to a "/stats g" request.
+                    break;
+                case "247": //RPL_STATSXLINE / format: "X <address> <timestamp> :<reason>"
+                    //sent in reply to a "/stats x" request.
+                    break;
+                case "249": //RPL_STATSDEBUG / format: "<info>"
+                    //sent in reply to a "/stats t" or "/stats z" request, contains multiple debug and statistics info.
+                    break;
+                case "251": // RPL_LUSERCLIENT / List user result, format: "There are <int> users and <int> invisible on <int> servers"
+                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                case "252": // RPL_LUSEROP / List the operators online, format: "<int> :operator(s) online"
+                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                case "253": // RPL_LUSERUNKNOWN / List the unknown connections, format: "<int> :unknown connection(s)"
+                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                case "254": // RPL_LUSERCHANNELS / List the number of channels, format: "<int> :channels formed"
+                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                case "255": // RPL_LUSERME / List the number of clients connected to this server, format: "I have <int> clients and <int> servers"
+                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                    break;
+                case "256": //RPL_ADMINME / returns in reply to a "/admin" request, format: "Administrative info about <server>"
+                    //NOTE, sent together with 257, 258 and 259
+                case "257": //RPL_ADMINLOC1 / returns in reply to a "/admin" request, format: "<info>"
+                    //NOTE, sent together with 256, 258 and 259
+                case "258": //RPL_ADMINLOC2 / returns in reply to a "/admin" request, format: "<info>"
+                    //NOTE, sent together with 256, 257 and 259
+                case "259": //RPL_ADMINEMAIL / returns in reply to a "/admin" request, format: "<info>"
+                    //NOTE, sent together with 256, 257 and 258
+                case "261": //RPL_TRACELOG / only for IRCOPs, could return an error otherwise. Format: "File <logfile> <debuglevel>
+                    break;
+                case "262": //RPL_TRACEPING
+                    break;
+                case "263": //RPL_LOAD2HI / RPL_TRYAGAIN, not in RFC, sent when the server load is too high to send a reply to a command.
+                    // format: "<errormessage>" e.g. "server load is temporarily too heavy, please wait and try again"
+                    // format: "<command> :Please wait a while and try again."
+                case "265": // RPL_LOCALUSERS / format: "Current local users: <int> Max: <int>
+                case "266": // RPL_GLOBALUSERS / format: "Current global users: <int> Max: <int>
                     //TODO? Server user list (do we care?)
+                    //yes we should, this is returned in some cases after a connection is estabilished, and in sequence, in response to a "/lusers" command.
                     break;
 
                 case "372": // RPL_MOTD / MOTD
