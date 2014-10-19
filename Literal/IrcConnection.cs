@@ -462,6 +462,9 @@ namespace Literal {
                     //TODO returns UNIX timestamp when the channel was first created or populated
                     // :server.domain.tld 329 nick #channel 1405432677
                     break;
+                case "341": // RPL_INVITING
+                    Debug.Log(command.args[0] + " invites you to join " + command.args[1]);
+                    break;
                 case "345": // RPL_INVITED
                 //TODO Handle being invited
                 case "346": // RPL_INVITELIST
@@ -551,7 +554,7 @@ namespace Literal {
 
                 case "401": // ERR_NOSUCHNICK / The specified nick doesn't exist
                     if (ServerError != null) {
-                        ServerError(this, 401, "No such nick");
+                        ServerError(this, 401, command.command + " No such nick");
                     }
                     break;
 
@@ -562,6 +565,7 @@ namespace Literal {
                     break;
 
                 case "403": // ERR_NOSUCHCHANNEL / The specified channel doesn't exist (Probably not used. Tested on Azzurra only, must do other tests)
+                    //further note: seems Azzurra uses 401 for both nick and channels, should check on other IRCds
                     if (ServerError != null) {
                         ServerError(this, 403, "No such channel");
                     }
@@ -569,13 +573,13 @@ namespace Literal {
 
                 case "404": // ERR_CANNOTSENDTOCHAN / Due to chanmodes (+m with no grades) or +b and still on chan
                     if (ServerError != null) {
-                        ServerError(this, 404, "Cannot send to channel"); // To be completed (Need to add which channel on the end of the string).
+                        ServerError(this, 404, command.args[0] + "Cannot send to channel");
                     }
                     break;
 
                 case "405": // ERR_TOOMANYCHANNELS / Too many opened channels.
                     if (ServerError != null) {
-                        ServerError(this, 405, "Too many opened channels");
+                        ServerError(this, 405, command.args[0] + " Too many opened channels");
                     }
                     break;
 
@@ -593,7 +597,7 @@ namespace Literal {
 
                 case "421": // ERR_UNKNOWNCOMMAND
                     if (ServerError != null) {
-                        ServerError(this, 421, command.command + ": Unknown command");
+                        ServerError(this, 421, command.command + " Unknown command");
                     }
                     break;
 
@@ -632,31 +636,31 @@ namespace Literal {
 
                 case "471": // ERR_CHANNELISFULL / For example, when there's the mode +l and the channel is already full
                     if (ServerError != null) {
-                        ServerError(this, 471, "Channel is full");
+                        ServerError(this, 471, command.args[0] + " Channel is full");
                     }
                     break;
 
                 case "473": // ERR_INVITEONLYCHAN / The channel is invite only
                     if (ServerError != null) {
-                        ServerError(this, 473, "This channel is invite only"); // To be completed (Need specify channel).
+                        ServerError(this, 473, command.args[0] + " This channel is invite only");
                     }
                     break;
 
                 case "474": // ERR_BANNEDFROMCHAN / Cannot join on a channel while you're banned on it.
                     if (ServerError != null) {
-                        ServerError(this, 474, "You are banned from this channel"); // To be completed (Need specify channel).
+                        ServerError(this, 474, command.args[0] + "You are banned from this channel");
                     }
                     break;
 
                 case "475": // ERR_BADCHANNELKEY / Keyword to join that channel is incorrect
                     if (ServerError != null) {
-                        ServerError(this, 475, "The keyword for this channel is incorrect"); // To be completed (Need specify channel).
+                        ServerError(this, 475, command.args[0] + "The keyword for this channel is incorrect");
                     }
                     break;
 
                 case "478": // ERR_BANLISTFULL / Ban list on that channel is full, cannot add more bans.
                     if (ServerError != null) {
-                        ServerError(this, 478, "The banlist is full"); // To be completed (Need specify channel).
+                        ServerError(this, 478, command.args[0] + "The banlist is full"); // To be completed (Need specify channel).
                     }
                     break;
 
