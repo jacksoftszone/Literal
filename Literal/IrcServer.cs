@@ -9,7 +9,10 @@ namespace Literal {
         public string host, name;
 
         // Server info (sent with 004)
-        public string serverName, serverVersion, userModes, channelModes;
+        public string serverName, serverVersion, chanTypes, userModes, channelModes;
+
+        // Prefixes
+        public Dictionary<string, string> prefixes = new Dictionary<string, string>();
 
         // MOTD
         public List<string> motd = new List<string>();
