@@ -472,8 +472,8 @@ namespace Literal {
                     serverInfo.motd.Add(curMotd);
                     break;
                 case "375": // RPL_MOTDSTART
+                    break;
                 case "376": // RPL_ENDOFMOTD
-                    //TODO MOTD handling (parse and save to IrcServer)
                     break;
 
                 case "331": // RPL_NOTOPIC / Empty topic (no need to do anything for now)
