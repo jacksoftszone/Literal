@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>738d1080-e0cc-460b-ac96-f5708c48341e</ProjectGuid>
+    <ProjectGuid>{C25B40CC-3738-4752-883E-F6A7A58163A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiteralTest</RootNamespace>
@@ -50,8 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestConnection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Literal\Literal.csproj">
+      <Project>{2709fc6a-7b94-4954-a7f0-78db29b8774f}</Project>
+      <Name>Literal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
