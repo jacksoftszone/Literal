@@ -314,7 +314,7 @@ namespace Literal {
                     //TODO Parse capabilities
                     break;
                 case "007": // RPL_MAPEND / End of /MAP command, format "End of /MAP"
-                    //NOTE: this seems to be an Undernet only message code, should we care?
+                    //NOTE: the message code is used by all Unreal-based servers + Undernet, can be ignored since it represents only the end of the output
                     break;
                 case "008": // RPL_NOMASK / Server notice mask, format: "<number> :: Server notice mask (<hex>)"
                     //again, this is Undernet only, act as an extension to the +s User mode, to filter which server notices are sent to the user.
