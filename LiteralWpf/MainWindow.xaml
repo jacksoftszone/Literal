@@ -3,79 +3,79 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lit="clr-namespace:LiteralWpf.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="MainWnd" x:Class="LiteralWpf.MainWindow"
-        Title="Literal" Width="800" Height="550" Background="#FF333333" MinWidth="500" MinHeight="300" WindowStartupLocation="CenterScreen" Icon="Resources/LiteralMainIcon.ico" WindowStyle="None">
-	<lit:FramelessWindow.Resources>
-		<Style TargetType="{x:Type TextBox}">
-			<Setter Property="Template">
-			   <Setter.Value>
-				  <ControlTemplate TargetType="{x:Type TextBox}">
-					  <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+        Title="Literal" Width="800" Height="550" Background="#FF333333" MinWidth="500" MinHeight="300" WindowStartupLocation="CenterScreen" Icon="Resources/LiteralMainIcon.ico" BorderThickness="0" AllowsTransparency="True" WindowStyle="None">
+    <lit:FramelessWindow.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
 							  BorderBrush="{TemplateBinding Border.BorderBrush}"
 							  Background="{TemplateBinding Panel.Background}"
 							  x:Name="border"
 							  SnapsToDevicePixels="True">
-						 <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                            <ScrollViewer HorizontalScrollBarVisibility="Hidden"
 									   VerticalScrollBarVisibility="Hidden"
 									   x:Name="PART_ContentHost"
 									   Focusable="False" />
-					  </Border>
-				   <ControlTemplate.Triggers>
-					  <Trigger Property="IsEnabled" Value="False">
-						<Setter Property="Opacity" TargetName="border"
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="border"
 								Value="0.56"/>
-					  </Trigger>
-					  <Trigger Property="IsMouseOver" Value="True">
-						<Setter Property="Background" TargetName="border" 
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" 
 								Value="#FF181818"/>
-					  </Trigger>
-					  <Trigger Property="IsKeyboardFocused" Value="True">
-						<Setter Property="Background" TargetName="border" 
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" TargetName="border" 
 							   Value="#FF111111"/>
-					  </Trigger>
-				   </ControlTemplate.Triggers>
-				</ControlTemplate>
-			  </Setter.Value>
-			</Setter>
-		 </Style>
-	</lit:FramelessWindow.Resources>
-	<Grid Margin="0" Background="#FF333333">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="160"/>
-			<ColumnDefinition/>
-			<ColumnDefinition Width="160"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="26"/>
-			<RowDefinition Height="24"/>
-			<RowDefinition/>
-			<RowDefinition Height="40"/>
-		</Grid.RowDefinitions>
-		<StackPanel x:Name="ChatContainer" Grid.Column="1" Grid.Row="2" Background="#FF222222"/>
-		<Border Grid.Row="1" Grid.RowSpan="2"  Background="#7F1F1F1F" BorderThickness="0" BorderBrush="#7F000000">
-			<StackPanel x:Name="ServerTree">
-				<lit:ServerBlock Title="Test block">
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </lit:FramelessWindow.Resources>
+    <Grid Margin="0" Background="#FF333333">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="160"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ChatContainer" Grid.Column="1" Grid.Row="2" Background="#FF222222"/>
+        <Border Grid.Row="1" Grid.RowSpan="2"  Background="#7F1F1F1F" BorderThickness="0" BorderBrush="#7F000000">
+            <StackPanel x:Name="ServerTree">
+                <lit:ServerBlock Title="Test block">
                     <lit:ChannelButton ChanName="#testchan" />
-				</lit:ServerBlock>
+                </lit:ServerBlock>
                 <lit:ServerBlock Title="Lol internet">
                     <lit:ChannelButton ChanName="#jacksoft:OO" />
                     <lit:ChannelButton ChanName="#nomatimoncioe" />
                 </lit:ServerBlock>
-			</StackPanel>
-		</Border>
-        <Border Grid.Column="2" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2" BorderThickness="0" BorderBrush="#7F000000">
-		    <StackPanel x:Name="UserContainer" />
+            </StackPanel>
         </Border>
-		<Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF181818" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" BorderThickness="0,0,0,1" BorderBrush="#7F000000"/>
-		<Menu Background="{x:Null}" BorderThickness="2,2,0,0" Panel.ZIndex="1">
-			<MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
-				<MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
-			</MenuItem>
+        <Border Grid.Column="2" Grid.Row="1" Background="#7F1F1F1F" Grid.RowSpan="2" BorderThickness="0" BorderBrush="#7F000000">
+            <StackPanel x:Name="UserContainer" />
+        </Border>
+        <Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF181818" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" BorderThickness="0,0,0,1" BorderBrush="#7F000000"/>
+        <Menu Background="{x:Null}" BorderThickness="2,2,0,0" Panel.ZIndex="1">
+            <MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
+                <MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
+            </MenuItem>
             <MenuItem Header="_SETTINGS" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
             <MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
-		</Menu>
-		<Label Content="- LITERAL -" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" Padding="0" FontFamily="/LiteralWpf;component/Fonts/#Lato" BorderThickness="0" Margin="0"/>
-		<TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="{x:Null}" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" FontSize="13.333" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" />
-		<Border BorderBrush="#7F000000" BorderThickness="0,1,0,0" Grid.ColumnSpan="3" Grid.Row="3"/>
-		<Border BorderBrush="#7F000000" BorderThickness="0,0,0,1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="792"/>
-	</Grid>
+        </Menu>
+        <Label Content="- LITERAL -" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" Padding="0" FontFamily="/LiteralWpf;component/Fonts/#Lato" BorderThickness="0" Margin="0"/>
+        <TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="{x:Null}" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" FontSize="13.333" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" />
+        <Border BorderBrush="#7F000000" BorderThickness="0,1,0,0" Grid.ColumnSpan="3" Grid.Row="3"/>
+        <Border BorderBrush="#7F000000" BorderThickness="0,0,0,1" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="792"/>
+    </Grid>
 </lit:FramelessWindow>

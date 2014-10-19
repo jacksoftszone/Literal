@@ -14,6 +14,8 @@ namespace LiteralWpf.Controls {
     public class FramelessWindow : Window {
 
         private HwndSource _hwndSource;
+        private double oldwidth, oldheight, oldtop, oldleft;
+        private bool winmaximized = false;
 
         protected override void OnInitialized(EventArgs e) {
             SourceInitialized += OnSourceInitialized;
@@ -42,7 +44,31 @@ namespace LiteralWpf.Controls {
         }
 
         protected void Restore(object sender, RoutedEventArgs e) {
-            WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            //WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            if (winmaximized == false) {
+                oldheight = this.Height;
+                oldwidth = this.Width;
+                oldtop = this.Top;
+                oldleft = this.Left;
+
+                this.Height = SystemParameters.WorkArea.Height;
+                this.Width = SystemParameters.WorkArea.Width;
+                this.Top = 0;
+                this.Left = 0;
+
+                this.ResizeMode = System.Windows.ResizeMode.NoResize;
+                winmaximized = true;
+            }
+            else {
+                this.ResizeMode = System.Windows.ResizeMode.CanResize;
+                this.Height = oldheight;
+                this.Width = oldwidth;
+                this.Top = oldtop;
+                this.Left = oldleft;
+
+                WindowState = WindowState.Normal;
+                winmaximized = false;
+            }
         }
 
         protected void Close(object sender, RoutedEventArgs e) {
@@ -89,34 +115,37 @@ namespace LiteralWpf.Controls {
                 DragMove();
         }
         protected void ResizeMouseMove(Object sender, MouseEventArgs e) {
-            Rectangle rectangle = sender as Rectangle;
-            switch (rectangle.Name) {
-                case "top":
-                    Cursor = Cursors.SizeNS;
-                    break;
-                case "bottom":
-                    Cursor = Cursors.SizeNS;
-                    break;
-                case "left":
-                    Cursor = Cursors.SizeWE;
-                    break;
-                case "right":
-                    Cursor = Cursors.SizeWE;
-                    break;
-                case "topLeft":
-                    Cursor = Cursors.SizeNWSE;
-                    break;
-                case "topRight":
-                    Cursor = Cursors.SizeNESW;
-                    break;
-                case "bottomLeft":
-                    Cursor = Cursors.SizeNESW;
-                    break;
-                case "bottomRight":
-                    Cursor = Cursors.SizeNWSE;
-                    break;
-                default:
-                    break;
+            if (winmaximized == false) {
+                Rectangle rectangle = sender as Rectangle;
+                switch (rectangle.Name)
+                {
+                    case "top":
+                        Cursor = Cursors.SizeNS;
+                        break;
+                    case "bottom":
+                        Cursor = Cursors.SizeNS;
+                        break;
+                    case "left":
+                        Cursor = Cursors.SizeWE;
+                        break;
+                    case "right":
+                        Cursor = Cursors.SizeWE;
+                        break;
+                    case "topLeft":
+                        Cursor = Cursors.SizeNWSE;
+                        break;
+                    case "topRight":
+                        Cursor = Cursors.SizeNESW;
+                        break;
+                    case "bottomLeft":
+                        Cursor = Cursors.SizeNESW;
+                        break;
+                    case "bottomRight":
+                        Cursor = Cursors.SizeNWSE;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -124,47 +153,51 @@ namespace LiteralWpf.Controls {
         private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
         protected void ResizeRectangle_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
-            Rectangle rectangle = sender as Rectangle;
-            switch (rectangle.Name) {
-                case "top":
-                    Cursor = Cursors.SizeNS;
-                    ResizeWindow(ResizeDirection.Top);
-                    break;
-                case "bottom":
-                    Cursor = Cursors.SizeNS;
-                    ResizeWindow(ResizeDirection.Bottom);
-                    break;
-                case "left":
-                    Cursor = Cursors.SizeWE;
-                    ResizeWindow(ResizeDirection.Left);
-                    break;
-                case "right":
-                    Cursor = Cursors.SizeWE;
-                    ResizeWindow(ResizeDirection.Right);
-                    break;
-                case "topLeft":
-                    Cursor = Cursors.SizeNWSE;
-                    ResizeWindow(ResizeDirection.TopLeft);
-                    break;
-                case "topRight":
-                    Cursor = Cursors.SizeNESW;
-                    ResizeWindow(ResizeDirection.TopRight);
-                    break;
-                case "bottomLeft":
-                    Cursor = Cursors.SizeNESW;
-                    ResizeWindow(ResizeDirection.BottomLeft);
-                    break;
-                case "bottomRight":
-                    Cursor = Cursors.SizeNWSE;
-                    ResizeWindow(ResizeDirection.BottomRight);
-                    break;
-                default:
-                    break;
+            if (winmaximized == false) {
+                Rectangle rectangle = sender as Rectangle;
+                switch (rectangle.Name) {
+                    case "top":
+                        Cursor = Cursors.SizeNS;
+                        ResizeWindow(ResizeDirection.Top);
+                        break;
+                    case "bottom":
+                        Cursor = Cursors.SizeNS;
+                        ResizeWindow(ResizeDirection.Bottom);
+                        break;
+                    case "left":
+                        Cursor = Cursors.SizeWE;
+                        ResizeWindow(ResizeDirection.Left);
+                        break;
+                    case "right":
+                        Cursor = Cursors.SizeWE;
+                        ResizeWindow(ResizeDirection.Right);
+                        break;
+                    case "topLeft":
+                        Cursor = Cursors.SizeNWSE;
+                        ResizeWindow(ResizeDirection.TopLeft);
+                        break;
+                    case "topRight":
+                        Cursor = Cursors.SizeNESW;
+                        ResizeWindow(ResizeDirection.TopRight);
+                        break;
+                    case "bottomLeft":
+                        Cursor = Cursors.SizeNESW;
+                        ResizeWindow(ResizeDirection.BottomLeft);
+                        break;
+                    case "bottomRight":
+                        Cursor = Cursors.SizeNWSE;
+                        ResizeWindow(ResizeDirection.BottomRight);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         private void ResizeWindow(ResizeDirection direction) {
-            SendMessage(_hwndSource.Handle, 0x112, (IntPtr)(61440 + direction), IntPtr.Zero);
+            if (winmaximized == false) {
+                SendMessage(_hwndSource.Handle, 0x112, (IntPtr)(61440 + direction), IntPtr.Zero);
+            }
         }
 
         private enum ResizeDirection {
