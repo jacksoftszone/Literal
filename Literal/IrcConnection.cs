@@ -453,6 +453,13 @@ namespace Literal {
                     //TODO? Server user list (do we care?)
                     //yes we should, this is returned in some cases after a connection is established, and in sequence, in response to a "/lusers" command.
                     break;
+                case "324": // RPL_CHANMODES
+                    //TODO returns current channel modes
+                    // :server.domain.tld 324 nick #channel +fnrt [5t]:2
+                case "329": // RPL_CHANCREATED
+                    //TODO returns UNIX timestamp when the channel was first created or populated
+                    // :server.domain.tld 329 nick #channel 1405432677
+                    break;
                 case "345": // RPL_INVITED
                 //TODO Handle being invited
                 case "346": // RPL_INVITELIST
