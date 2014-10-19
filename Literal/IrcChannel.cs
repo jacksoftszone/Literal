@@ -11,6 +11,9 @@ namespace Literal {
         public string modes;
         public string topic, topicBy;
         public List<IrcUser> users;
+        public List<IrcUser> banlist;
+        public List<IrcUser> exceptlist;
+        public List<IrcUser> invitelist;
 
         public double topicWhenUnix {
             get {
@@ -25,6 +28,30 @@ namespace Literal {
 
         public void Join(IrcUser user) {
             users.Add(user);
+        }
+
+        public void AddBan(string hostmask) {
+            banlist.Add(IrcUser.fromOrigin(hostmask));
+        }
+
+        public void DelBan(string hostmask) {
+            banlist.Remove(IrcUser.fromOrigin(hostmask)); // NOTE: check if Remove works with hashes or direct references.
+        }
+
+        public void AddExcept(string hostmask) {
+            exceptlist.Add(IrcUser.fromOrigin(hostmask));
+        }
+
+        public void DelExcept(string hostmask) {
+            exceptlist.Remove(IrcUser.fromOrigin(hostmask)); // NOTE: check if Remove works with hashes or direct references.
+        }
+
+        public void AddInvite(string hostmask) {
+            invitelist.Add(IrcUser.fromOrigin(hostmask));
+        }
+
+        public void DelInvite(string hostmask) {
+            invitelist.Remove(IrcUser.fromOrigin(hostmask)); // NOTE: check if Remove works with hashes or direct references.
         }
     }
 }
