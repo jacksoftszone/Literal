@@ -209,10 +209,11 @@ namespace Literal {
 #endif
 
             // Write to network stream
-            if(serverConnInfo.useSSL)
+            if (serverConnInfo.useSSL) {
                 await serverSslStream.WriteAsync(utfstring, 0, utfstring.Length);
-            else
+            } else {
                 await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
+            }
         }
 
         private async void ReadLoop() {
@@ -224,10 +225,11 @@ namespace Literal {
             int read = -1;
             char[] trimChar = { ' ', '\r', '\n' };
             while (read != 0) {
-                if (serverConnInfo.useSSL)
+                if (serverConnInfo.useSSL) {
                     read = await serverSslStream.ReadAsync(bytes, 0, 1024);
-                else
+                } else {
                     read = await serverStream.ReadAsync(bytes, 0, 1024);
+                }
                 string decoded = Encoding.UTF8.GetString(bytes, 0, read);
                 message += decoded;
 
