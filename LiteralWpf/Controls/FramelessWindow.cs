@@ -46,28 +46,10 @@ namespace LiteralWpf.Controls {
         protected void Restore(object sender, RoutedEventArgs e) {
             //WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
             if (winmaximized == false) {
-                oldheight = this.Height;
-                oldwidth = this.Width;
-                oldtop = this.Top;
-                oldleft = this.Left;
-
-                this.Height = SystemParameters.WorkArea.Height;
-                this.Width = SystemParameters.WorkArea.Width;
-                this.Top = 0;
-                this.Left = 0;
-
-                this.ResizeMode = System.Windows.ResizeMode.NoResize;
-                winmaximized = true;
+                MaximizeFunction();
             }
             else {
-                this.ResizeMode = System.Windows.ResizeMode.CanResize;
-                this.Height = oldheight;
-                this.Width = oldwidth;
-                this.Top = oldtop;
-                this.Left = oldleft;
-
-                WindowState = WindowState.Normal;
-                winmaximized = false;
+                RestoreFunction();
             }
         }
 
@@ -75,6 +57,30 @@ namespace LiteralWpf.Controls {
             Close();
         }
 
+        private void MaximizeFunction() {
+            oldheight = this.Height;
+            oldwidth = this.Width;
+            oldtop = this.Top;
+            oldleft = this.Left;
+
+            this.Height = SystemParameters.WorkArea.Height;
+            this.Width = SystemParameters.WorkArea.Width;
+            this.Top = 0;
+            this.Left = 0;
+
+            this.ResizeMode = System.Windows.ResizeMode.NoResize;
+            winmaximized = true;
+        }
+        private void RestoreFunction() {
+            this.ResizeMode = System.Windows.ResizeMode.CanResize;
+            this.Height = oldheight;
+            this.Width = oldwidth;
+            this.Top = oldtop;
+            this.Left = oldleft;
+
+            WindowState = WindowState.Normal;
+            winmaximized = false;
+        }
         public override void OnApplyTemplate() {
             Button minimizeButton = GetTemplateChild("tbar_minimize") as Button;
             if (minimizeButton != null) {
@@ -111,9 +117,11 @@ namespace LiteralWpf.Controls {
         }
 
         private void DownDrag(object sender, MouseButtonEventArgs e) {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            if (Mouse.LeftButton == MouseButtonState.Pressed) {
                 DragMove();
+            }
         }
+
         protected void ResizeMouseMove(Object sender, MouseEventArgs e) {
             if (winmaximized == false) {
                 Rectangle rectangle = sender as Rectangle;
