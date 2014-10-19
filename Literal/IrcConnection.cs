@@ -443,7 +443,30 @@ namespace Literal {
                     //TODO? Server user list (do we care?)
                     //yes we should, this is returned in some cases after a connection is estabilished, and in sequence, in response to a "/lusers" command.
                     break;
-
+                case "346": // RPL_INVITE
+                    if (!channels.ContainsKey(command.args[1])) {
+                        Debug.Log("Received invite for an unrelated channel");
+                        break;
+                    } else {
+                        channels[command.args[1]].AddInvite(command.args[2]);
+                    }
+                    break;
+                case "348": // RPL_EXCEPT
+                    if (!channels.ContainsKey(command.args[1])) {
+                        Debug.Log("Received exception for an unrelated channel");
+                        break;
+                    } else {
+                        channels[command.args[1]].AddExcept(command.args[2]);
+                    }
+                    break;
+                case "367": // RPL_BAN
+                    if (!channels.ContainsKey(command.args[1])) {
+                        Debug.Log("Received ban for an unrelated channel");
+                        break;
+                    } else {
+                        channels[command.args[1]].AddBan(command.args[2]);
+                    }
+                    break;
                 case "372": // RPL_MOTD / MOTD
                 case "375": // RPL_MOTDSTART
                 case "376": // RPL_ENDOFMOTD
