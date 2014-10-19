@@ -7,6 +7,32 @@
 	x:Class="LiteralWpf.Controls.ChannelButton"
 	x:Name="ChannelButtonControl"
 	d:DesignWidth="150" Height="27" FontSize="16" FontFamily="/LiteralWpf;component/Fonts/#Lato">
+	<UserControl.Resources>
+		<Storyboard x:Key="HoverStart">
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ChannelName">
+				<EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FFAAAAAA"/>
+			</ColorAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ChannelName">
+				<EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FFCCCCCC"/>
+			</ColorAnimationUsingKeyFrames>
+		</Storyboard>
+        <Storyboard x:Key="HoverEnd">
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="ChannelName">
+				<EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FF444444"/>
+			</ColorAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ChannelName">
+                <EasingColorKeyFrame KeyTime="0:0:0.2" Value="#FF888888"/>
+			</ColorAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="UIElement.MouseEnter">
+			<BeginStoryboard x:Name="HoverStart_BeginStoryboard" Storyboard="{StaticResource HoverStart}"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="UIElement.MouseLeave">
+			<BeginStoryboard x:Name="HoverEnd_BeginStoryboard" Storyboard="{StaticResource HoverEnd}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
 
 	<Grid x:Name="LayoutRoot" Margin="5,2,2,1">
 		<Label x:Name="ChannelName" Content="{Binding ChannelNameText}" Padding="20,3,2,3" BorderThickness="1" BorderBrush="#FF444444" Foreground="#FF888888" Margin="0,0,0,0" FontSize="13.333"/>
