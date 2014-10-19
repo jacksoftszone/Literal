@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,7 @@ namespace Literal {
 
         private TcpClient serverSocket;
         private NetworkStream serverStream;
+        private SslStream serverSslStream;
         private IrcUser me;
 
         #endregion
@@ -73,9 +75,6 @@ namespace Literal {
         /// <param name="serverPort">Port to connect to</param>
         /// <param name="useSSL">Is SSL used? (not implemented yet)</param>
         public IrcConnection(string serverAddress, int serverPort, bool useSSL = false) {
-            if (useSSL) {
-                throw new System.NotImplementedException();
-            }
             serverConnInfo = new ServerConnectionInfo { address = serverAddress, port = serverPort, useSSL = useSSL };
             serverInfo = new IrcServer { host = serverAddress };
             channels = new Dictionary<string, IrcChannel>();
@@ -92,6 +91,11 @@ namespace Literal {
             serverSocket = new TcpClient();
             await serverSocket.ConnectAsync(serverConnInfo.address, serverConnInfo.port);
             serverStream = serverSocket.GetStream();
+            if (serverConnInfo.useSSL) {
+                serverSslStream = new SslStream(serverStream);
+                serverSslStream.AuthenticateAsClient(serverConnInfo.address);
+            }
+
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
             me = new IrcUser { nickname = nickname, identd = username, hostname = "", realname = realname };
@@ -205,7 +209,10 @@ namespace Literal {
 #endif
 
             // Write to network stream
-            await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
+            if(serverConnInfo.useSSL)
+                await serverSslStream.WriteAsync(utfstring, 0, utfstring.Length);
+            else
+                await serverStream.WriteAsync(utfstring, 0, utfstring.Length);
         }
 
         private async void ReadLoop() {
@@ -217,7 +224,10 @@ namespace Literal {
             int read = -1;
             char[] trimChar = { ' ', '\r', '\n' };
             while (read != 0) {
-                read = await serverStream.ReadAsync(bytes, 0, 1024);
+                if (serverConnInfo.useSSL)
+                    read = await serverSslStream.ReadAsync(bytes, 0, 1024);
+                else
+                    read = await serverStream.ReadAsync(bytes, 0, 1024);
                 string decoded = Encoding.UTF8.GetString(bytes, 0, read);
                 message += decoded;
 
