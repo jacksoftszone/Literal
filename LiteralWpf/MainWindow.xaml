@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lit="clr-namespace:LiteralWpf.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="MainWnd" x:Class="LiteralWpf.MainWindow"
-        Title="MainWindow" Width="800" Height="550" Background="#FF333333" MinWidth="500" MinHeight="300" WindowStartupLocation="CenterScreen">
+        Title="Literal" Width="800" Height="550" Background="#FF333333" MinWidth="500" MinHeight="300" WindowStartupLocation="CenterScreen" Icon="Resources/LiteralMainIcon.ico" WindowStyle="None">
 	<lit:FramelessWindow.Resources>
 		<Style TargetType="{x:Type TextBox}">
 			<Setter Property="Template">
