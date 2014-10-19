@@ -135,6 +135,15 @@ namespace Literal {
         }
 
         /// <summary>
+        /// Sends an action to a channel.
+        /// </summary>
+        /// <param name="channel">Channel to send the action to</param>
+        /// <param name="action">Message to send</param>
+        public async Task Action(string channel, string action) {
+            await Message(channel, (char)1 + "ACTION " + action + (char)1);
+        }
+
+        /// <summary>
         /// Sends a CTCP to a channel/user.
         /// </summary>
         /// <param name="chanusr">Channel/User to send the CTCP to</param>
