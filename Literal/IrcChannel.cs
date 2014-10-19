@@ -53,5 +53,29 @@ namespace Literal {
         public void DelInvite(string hostmask) {
             invitelist.Remove(IrcUser.fromOrigin(hostmask)); // NOTE: check if Remove works with hashes or direct references.
         }
+
+        internal void Mode(IrcCommand command) {
+            switch (command.args[1]) {
+                //TODO fix for multiple modes
+                case "+b":
+                    AddBan(command.args[2]);
+                    break;
+                case "-b":
+                    DelBan(command.args[2]);
+                    break;
+                case "+e":
+                    AddExcept(command.args[2]);
+                    break;
+                case "-e":
+                    DelExcept(command.args[2]);
+                    break;
+                case "+I":
+                    AddInvite(command.args[2]);
+                    break;
+                case "-I":
+                    DelInvite(command.args[2]);
+                    break;
+            }
+        }
     }
 }

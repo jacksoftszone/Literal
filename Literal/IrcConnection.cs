@@ -413,38 +413,38 @@ namespace Literal {
                     //sent in reply to a "/stats t" or "/stats z" request, contains multiple debug and statistics info.
                     break;
                 case "251": // RPL_LUSERCLIENT / List user result, format: "There are <int> users and <int> invisible on <int> servers"
-                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
                 case "252": // RPL_LUSEROP / List the operators online, format: "<int> :operator(s) online"
-                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
                 case "253": // RPL_LUSERUNKNOWN / List the unknown connections, format: "<int> :unknown connection(s)"
-                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
                 case "254": // RPL_LUSERCHANNELS / List the number of channels, format: "<int> :channels formed"
-                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
                 case "255": // RPL_LUSERME / List the number of clients connected to this server, format: "I have <int> clients and <int> servers"
                     //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
                     break;
                 case "256": //RPL_ADMINME / returns in reply to a "/admin" request, format: "Administrative info about <server>"
-                    //NOTE, sent together with 257, 258 and 259
+                //NOTE, sent together with 257, 258 and 259
                 case "257": //RPL_ADMINLOC1 / returns in reply to a "/admin" request, format: "<info>"
-                    //NOTE, sent together with 256, 258 and 259
+                //NOTE, sent together with 256, 258 and 259
                 case "258": //RPL_ADMINLOC2 / returns in reply to a "/admin" request, format: "<info>"
-                    //NOTE, sent together with 256, 257 and 259
+                //NOTE, sent together with 256, 257 and 259
                 case "259": //RPL_ADMINEMAIL / returns in reply to a "/admin" request, format: "<info>"
-                    //NOTE, sent together with 256, 257 and 258
+                //NOTE, sent together with 256, 257 and 258
                 case "261": //RPL_TRACELOG / only for IRCOPs, could return an error otherwise. Format: "File <logfile> <debuglevel>
                     break;
                 case "262": //RPL_TRACEPING
                     break;
                 case "263": //RPL_LOAD2HI / RPL_TRYAGAIN, not in RFC, sent when the server load is too high to send a reply to a command.
-                    // format: "<errormessage>" e.g. "server load is temporarily too heavy, please wait and try again"
-                    // format: "<command> :Please wait a while and try again."
+                // format: "<errormessage>" e.g. "server load is temporarily too heavy, please wait and try again"
+                // format: "<command> :Please wait a while and try again."
                 case "265": // RPL_LOCALUSERS / format: "Current local users: <int> Max: <int>
                 case "266": // RPL_GLOBALUSERS / format: "Current global users: <int> Max: <int>
                     //TODO? Server user list (do we care?)
                     //yes we should, this is returned in some cases after a connection is estabilished, and in sequence, in response to a "/lusers" command.
                     break;
                 case "345": // RPL_INVITED
-                    //TODO Handle being invited
+                //TODO Handle being invited
                 case "346": // RPL_INVITELIST
                     if (!channels.ContainsKey(command.args[1])) {
                         Debug.Log("Received invite for an unrelated channel");
@@ -549,15 +549,13 @@ namespace Literal {
                     break;
 
                 case "404": // ERR_CANNOTSENDTOCHAN / Due to chanmodes (+m with no grades) or +b and still on chan
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 404, "Cannot send to channel"); // To be completed (Need to add which channel on the end of the string).
                     }
                     break;
 
                 case "405": // ERR_TOOMANYCHANNELS / Too manu opened channels.
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 405, "Too many opened channels");
                     }
                     break;
@@ -614,36 +612,31 @@ namespace Literal {
                     break;
 
                 case "471": // ERR_CHANNELISFULL / For example, when there's the mode +l and the channel is already full
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 471, "Channel is full");
                     }
                     break;
 
                 case "473": // ERR_INVITEONLYCHAN / The channel is invite only
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 473, "This channel is invite only"); // To be completed (Need specify channel).
                     }
                     break;
 
                 case "474": // ERR_BANNEDFROMCHAN / Cannot join on a channel while you're banned on it.
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 474, "You are banned from this channel"); // To be completed (Need specify channel).
                     }
                     break;
 
                 case "475": // ERR_BADCHANNELKEY / Keyword to join that channel is incorrect
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 475, "The keyword for this channel is incorrect"); // To be completed (Need specify channel).
                     }
                     break;
 
                 case "478": // ERR_BANLISTFULL / Ban list on that channel is full, cannot add more bans.
-                    if (ServerError != null)
-                    {
+                    if (ServerError != null) {
                         ServerError(this, 478, "The banlist is full"); // To be completed (Need specify channel).
                     }
                     break;
@@ -652,55 +645,19 @@ namespace Literal {
                 #region Channel/user modes
 
                 case "MODE":
-                    switch (command.args[1]) {
-                        case "+b":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received ban for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].AddBan(command.args[2]);
+                    if (command.args.Length < 2) {
+                        Debug.Log("Malformed MODE");
+                        break;
+                    }
+                    // Is it a channel?
+                    if (command.args[0][0] == '#') { //TODO replace with channel types (when 005 is done)
+                        if (!channels.ContainsKey(command.args[0])) {
+                            Debug.Log("Received MODE for non existant channel");
                             break;
-                        case "-b":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received unban for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].DelBan(command.args[2]);
-                            break;
-                        case "+e":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received exception add for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].AddExcept(command.args[2]);
-                            break;
-                        case "-e":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received exception remove for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].DelExcept(command.args[2]);
-                            break;
-                        case "+I":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received invite add for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].AddInvite(command.args[2]);
-                            break;
-                        case "-I":
-                            string destChannel = command.args[0];
-                            if (!channels.ContainsKey(destChannel)) {
-                                Debug.Log("Received invite remove for a non existant channel");
-                                break;
-                            }
-                            channels[destChannel].DelInvite(command.args[2]);
-                            break;
+                        }
+                        channels[command.args[0]].Mode(command);
+                    } else {
+                        //TODO handle user modes
                     }
                     break;
                 #endregion
