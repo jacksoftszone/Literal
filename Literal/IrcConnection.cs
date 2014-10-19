@@ -645,6 +645,61 @@ namespace Literal {
                     break;
 
                 #endregion
+                #region Channel/user modes
+
+                case "MODE":
+                    switch (command.args[1]) {
+                        case "+b":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received ban for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].AddBan(command.args[2]);
+                            break;
+                        case "-b":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received unban for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].DelBan(command.args[2]);
+                            break;
+                        case "+e":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received exception add for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].AddExcept(command.args[2]);
+                            break;
+                        case "-e":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received exception remove for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].DelExcept(command.args[2]);
+                            break;
+                        case "+I":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received invite add for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].AddInvite(command.args[2]);
+                            break;
+                        case "-I":
+                            string destChannel = command.args[0];
+                            if (!channels.ContainsKey(destChannel)) {
+                                Debug.Log("Received invite remove for a non existant channel");
+                                break;
+                            }
+                            channels[destChannel].DelInvite(command.args[2]);
+                            break;
+                    }
+                    break;
+                #endregion
 
                 default:
                     Debug.Error("Unknown command: " + command.command + " in \r\n  " + command.ToString());
