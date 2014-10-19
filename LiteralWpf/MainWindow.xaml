@@ -68,10 +68,14 @@
         <Label Content="" Grid.Column="1" FontSize="13.333" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" Background="#FF181818" Foreground="#FF878787" Grid.Row="1" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" BorderThickness="0,0,0,1" BorderBrush="#7F000000"/>
         <Menu Background="{x:Null}" BorderThickness="2,2,0,0" Panel.ZIndex="1">
             <MenuItem Header="_FILE" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12">
-                <MenuItem Header="Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
+                <MenuItem Header="_Connect..." ToolTip="Connect to IRC" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
+                <Separator/>
+                <MenuItem Header="_Quit" ToolTip="Close the application" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
             </MenuItem>
             <MenuItem Header="_SETTINGS" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
-            <MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False"/>
+            <MenuItem Header="_?" BorderThickness="1,2,1,1" Background="{x:Null}" Foreground="#FFCCCCCC" FontSize="12" IsEnabled="False">
+                <MenuItem Header="_About" ToolTip="About Literal" Foreground="#FF080808" Background="{x:Null}" BorderThickness="0"/>
+            </MenuItem>
         </Menu>
         <Label Content="- LITERAL -" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFDDDDDD" Padding="0" FontFamily="/LiteralWpf;component/Fonts/#Lato" BorderThickness="0" Margin="0"/>
         <TextBox x:Name="InputBox" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="0,5" Background="#FF222222" BorderBrush="{x:Null}" Foreground="#FFAAAAAA" VerticalContentAlignment="Center" SelectionBrush="White" BorderThickness="1" Padding="5,0" FontSize="13.333" FontFamily="/LiteralWpf;component/Fonts/#Source Sans Pro" />
