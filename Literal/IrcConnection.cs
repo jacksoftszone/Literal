@@ -468,6 +468,9 @@ namespace Literal {
                     }
                     break;
                 case "372": // RPL_MOTD / MOTD
+                    String curMotd = (command.args.ToString()).Split(new char[] { ':' }, 2)[1];
+                    serverInfo.motd.Add(curMotd);
+                    break;
                 case "375": // RPL_MOTDSTART
                 case "376": // RPL_ENDOFMOTD
                     //TODO MOTD handling (parse and save to IrcServer)
