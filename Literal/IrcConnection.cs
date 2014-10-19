@@ -289,7 +289,7 @@ namespace Literal {
 
                 //TODO: Some of these commands may require an administrator/ircop level, we should check which ones and keep in mind that in case
                 //the user doesn't have the required privileges, the returned message will be different (e.g. "Permission Denied, You do not have the correct irc operator privileges"
-                //and this could potentitally break the parsing.
+                //and this could potentially break the parsing.
                 case "001": // RPL_WELCOME / Welcome messages, format: "Welcome to the Internet Relay Network, <nick>!<user>@<host>"
                 case "002": // RPL_YOURHOST / Host message, format: "Your host is <servername>, running version <ver>"
                 case "003": // RPL_CREATED / Date and Time the server was created, format: "This server was created <date>"
@@ -321,16 +321,16 @@ namespace Literal {
                     break;
                 case "200": // RPL_TRACELINK / sent in response to the /trace command and has to pass it to another server, should require IrcOp privileges. 
                     //NOTE: the same privilege level requirement should applies to all the messages in the range 200-209
-                    //Multiple parameteres, format: "Link <version/debug level> <dest> <next server> v<protocol version> <uptime in sec> <backstream> <upstream>"
+                    //Multiple parameters, format: "Link <version/debug level> <dest> <next server> v<protocol version> <uptime in sec> <backstream> <upstream>"
                     break;
                 case "201": // RPL_TRACECONNECTING / format: "Try. <class> <server>"
-                    // used for connections not fully estabilished and still attempting to connect to the server.
+                    // used for connections not fully established and still attempting to connect to the server.
                     break;
                 case "202": // RPL_TRACEHANDSHAKE / format: "H.S. <class> <server>"
-                    // used for connections not fully estabilished and completing the handshake with the server.
+                    // used for connections not fully established and completing the handshake with the server.
                     break;
                 case "203": // RPL_TRACEUNKNOWN / format: "<class> <client IP, dot form>
-                    // used for connections not fully estabilished but in an unknown state.
+                    // used for connections not fully established but in an unknown state.
                     break;
                 case "204": // RPL_TRACEOPERATOR / format: "Oper <class> <nick>"
                     break;
@@ -413,15 +413,15 @@ namespace Literal {
                     //sent in reply to a "/stats t" or "/stats z" request, contains multiple debug and statistics info.
                     break;
                 case "251": // RPL_LUSERCLIENT / List user result, format: "There are <int> users and <int> invisible on <int> servers"
-                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been established, and in reply to a "/lusers" request"
                 case "252": // RPL_LUSEROP / List the operators online, format: "<int> :operator(s) online"
-                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been established, and in reply to a "/lusers" request"
                 case "253": // RPL_LUSERUNKNOWN / List the unknown connections, format: "<int> :unknown connection(s)"
-                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been established, and in reply to a "/lusers" request"
                 case "254": // RPL_LUSERCHANNELS / List the number of channels, format: "<int> :channels formed"
-                //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                //sent both once a connection has been established, and in reply to a "/lusers" request"
                 case "255": // RPL_LUSERME / List the number of clients connected to this server, format: "I have <int> clients and <int> servers"
-                    //sent both once a connection has been estabilished, and in reply to a "/lusers" request"
+                    //sent both once a connection has been established, and in reply to a "/lusers" request"
                     break;
                 case "256": //RPL_ADMINME / returns in reply to a "/admin" request, format: "Administrative info about <server>"
                 //NOTE, sent together with 257, 258 and 259
@@ -441,7 +441,7 @@ namespace Literal {
                 case "265": // RPL_LOCALUSERS / format: "Current local users: <int> Max: <int>
                 case "266": // RPL_GLOBALUSERS / format: "Current global users: <int> Max: <int>
                     //TODO? Server user list (do we care?)
-                    //yes we should, this is returned in some cases after a connection is estabilished, and in sequence, in response to a "/lusers" command.
+                    //yes we should, this is returned in some cases after a connection is established, and in sequence, in response to a "/lusers" command.
                     break;
                 case "345": // RPL_INVITED
                 //TODO Handle being invited
@@ -554,7 +554,7 @@ namespace Literal {
                     }
                     break;
 
-                case "405": // ERR_TOOMANYCHANNELS / Too manu opened channels.
+                case "405": // ERR_TOOMANYCHANNELS / Too many opened channels.
                     if (ServerError != null) {
                         ServerError(this, 405, "Too many opened channels");
                     }
@@ -652,7 +652,7 @@ namespace Literal {
                     // Is it a channel?
                     if (command.args[0][0] == '#') { //TODO replace with channel types (when 005 is done)
                         if (!channels.ContainsKey(command.args[0])) {
-                            Debug.Log("Received MODE for non existant channel");
+                            Debug.Log("Received MODE for an unrelated channel");
                             break;
                         }
                         channels[command.args[0]].Mode(command);

@@ -39,12 +39,12 @@ namespace Literal {
 
             // Get args
             int argsEnd = message.IndexOf(" :");
-            string[] argmsg = message.Substring(commandEnd).Split(new string[]{" :"}, 2, StringSplitOptions.None);
+            string[] argmsg = message.Substring(commandEnd).Split(new string[] { " :" }, 2, StringSplitOptions.None);
             args = argmsg[0].Length < 1 ? null : argmsg[0].Substring(1).Split(' '); // First character is a space
 
             // Check if there is a text part and get it
             if (argmsg.Length > 1)
-                text = argmsg[1]; 
+                text = argmsg[1];
         }
 
         public override string ToString() {
