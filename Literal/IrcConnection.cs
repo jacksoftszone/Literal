@@ -443,7 +443,9 @@ namespace Literal {
                     //TODO? Server user list (do we care?)
                     //yes we should, this is returned in some cases after a connection is estabilished, and in sequence, in response to a "/lusers" command.
                     break;
-                case "346": // RPL_INVITE
+                case "345": // RPL_INVITED
+                    //TODO Handle being invited
+                case "346": // RPL_INVITELIST
                     if (!channels.ContainsKey(command.args[1])) {
                         Debug.Log("Received invite for an unrelated channel");
                         break;
@@ -468,11 +470,9 @@ namespace Literal {
                     }
                     break;
                 case "372": // RPL_MOTD / MOTD
-                    String curMotd = (command.args.ToString()).Split(new char[] { ':' }, 2)[1];
-                    serverInfo.motd.Add(curMotd);
+                    serverInfo.motd.Add(command.text);
                     break;
                 case "375": // RPL_MOTDSTART
-                    break;
                 case "376": // RPL_ENDOFMOTD
                     break;
 
@@ -707,7 +707,6 @@ namespace Literal {
             }
         }
         #endregion
-
     }
 
 }
