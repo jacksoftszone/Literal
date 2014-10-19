@@ -470,7 +470,11 @@ namespace Literal {
                     }
                     break;
                 case "372": // RPL_MOTD / MOTD
-                    serverInfo.motd.Add(command.text);
+                    if (command.text.Length < 2) {
+                        Debug.Log("Malformed MOTD (missing :-)");
+                        break;
+                    }
+                    serverInfo.motd.Add(command.text.Substring(2));
                     break;
                 case "375": // RPL_MOTDSTART
                 case "376": // RPL_ENDOFMOTD
