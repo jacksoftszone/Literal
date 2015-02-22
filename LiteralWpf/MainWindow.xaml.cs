@@ -24,7 +24,7 @@ namespace LiteralWpf
             ConnMan.Show();
         }
 
-        //Retreive OS informations, usefull for ProgressTaskBar function and future uses
+        //Retreive OS informations, usefull for ProgressTaskBar function and future uses. Maybe will be placed in another Class file.
         public void GetOSInformations() {
             Variables.OSVersionFull = Environment.OSVersion.Version.ToString(); //eg. 6.1.7601.65536 (Maybe will be deprecated)
             Variables.OSVersion = Environment.OSVersion.Version.Major + '.' + Environment.OSVersion.Version.Minor; //eg. 6.1
