@@ -43,16 +43,23 @@ namespace Literal {
             args = argmsg[0].Length < 1 ? null : argmsg[0].Substring(1).Split(' '); // First character is a space
 
             // Check if there is a text part and get it
-            if (argmsg.Length > 1)
+            if (argmsg.Length > 1) {
                 text = argmsg[1];
+            }
         }
 
         public override string ToString() {
             string final = "";
-            if (origin != null && origin.Length > 0) final += ":" + origin + " ";
+            if (origin != null && origin.Length > 0) {
+                final += ":" + origin + " ";
+            }
             final += command;
-            if (args != null && args.Length > 0) final += " " + string.Join(" ", args);
-            if (text != null && text.Length > 0) final += " :" + text;
+            if (args != null && args.Length > 0) {
+                final += " " + string.Join(" ", args);
+            }
+            if (text != null && text.Length > 0) {
+                final += " :" + text;
+            }
             return final;
         }
     }

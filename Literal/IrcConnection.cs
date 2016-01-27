@@ -33,13 +33,13 @@ namespace Literal {
         /// <summary>
         /// Called for every raw message received
         /// </summary>
-        public event RawMessageHandler RawMessage;
+        public event RawMessageHandler OnRawMessage;
         public delegate void RawMessageHandler(IrcConnection connection, string rawmessage);
 
         /// <summary>
         /// Called for every server error
         /// </summary>
-        public event ErrorHandler ServerError;
+        public event ErrorHandler OnServerError;
         public delegate void ErrorHandler(IrcConnection connection, int code, string error);
 
         #endregion
@@ -98,7 +98,7 @@ namespace Literal {
 
             await Write("NICK " + nickname);
             await Write("USER " + username + " 8 * :" + realname);
-            me = new IrcUser { nickname = nickname, identd = username, hostname = "", realname = realname };
+            me = new IrcUser { nickname = nickname, ident = username, hostname = "", realname = realname };
             if (Connected != null) {
                 Connected(this);
             }
@@ -244,8 +244,8 @@ namespace Literal {
 
                 foreach (string msg in messages.Take(messages.Length - 1)) {
                     string trimMessage = msg.TrimEnd(trimChar);
-                    if (RawMessage != null) {
-                        RawMessage(this, trimMessage);
+                    if (OnRawMessage != null) {
+                        OnRawMessage(this, trimMessage);
                     }
                     IrcCommand command = new IrcCommand(trimMessage);
                     await Handle(command);
@@ -553,66 +553,66 @@ namespace Literal {
                     break;
 
                 case "401": // ERR_NOSUCHNICK / The specified nick doesn't exist
-                    if (ServerError != null) {
-                        ServerError(this, 401, command.command + " No such nick");
+                    if (OnServerError != null) {
+                        OnServerError(this, 401, command.command + " No such nick");
                     }
                     break;
 
                 case "402": // ERR_NOSUCHSERVER / The specified server doesn't exist (Untested)
-                    if (ServerError != null) {
-                        ServerError(this, 402, "No such server");
+                    if (OnServerError != null) {
+                        OnServerError(this, 402, "No such server");
                     }
                     break;
 
                 case "403": // ERR_NOSUCHCHANNEL / The specified channel doesn't exist (Probably not used. Tested on Azzurra only, must do other tests)
                     //further note: seems Azzurra uses 401 for both nick and channels, should check on other IRCds
-                    if (ServerError != null) {
-                        ServerError(this, 403, "No such channel");
+                    if (OnServerError != null) {
+                        OnServerError(this, 403, "No such channel");
                     }
                     break;
 
                 case "404": // ERR_CANNOTSENDTOCHAN / Due to chanmodes (+m with no grades) or +b and still on chan
-                    if (ServerError != null) {
-                        ServerError(this, 404, command.args[0] + "Cannot send to channel");
+                    if (OnServerError != null) {
+                        OnServerError(this, 404, command.args[0] + "Cannot send to channel");
                     }
                     break;
 
                 case "405": // ERR_TOOMANYCHANNELS / Too many opened channels.
-                    if (ServerError != null) {
-                        ServerError(this, 405, command.args[0] + " Too many opened channels");
+                    if (OnServerError != null) {
+                        OnServerError(this, 405, command.args[0] + " Too many opened channels");
                     }
                     break;
 
                 case "411": // ERR_NORECIPIENT / Command issued without a recipient, WHOIS and INVITE uses a different error, 431 and 461
-                    if (ServerError != null) {
-                        ServerError(this, 411, "No recipient given (" + command.command + ")");
+                    if (OnServerError != null) {
+                        OnServerError(this, 411, "No recipient given (" + command.command + ")");
                     }
                     break;
 
                 case "416": // ERR_QUERYTOOLONG
-                    if (ServerError != null) {
-                        ServerError(this, 416, "Too many lines in the output, restrict your query");
+                    if (OnServerError != null) {
+                        OnServerError(this, 416, "Too many lines in the output, restrict your query");
                     }
                     break;
 
                 case "421": // ERR_UNKNOWNCOMMAND
-                    if (ServerError != null) {
-                        ServerError(this, 421, command.command + " Unknown command");
+                    if (OnServerError != null) {
+                        OnServerError(this, 421, command.command + " Unknown command");
                     }
                     break;
 
                 case "431": // ERR_NONICKNAMEGIVEN
-                    if (ServerError != null) {
-                        ServerError(this, 431, "No nickname given");
+                    if (OnServerError != null) {
+                        OnServerError(this, 431, "No nickname given");
                     }
                     break;
 
                 case "432": // ERR_ERRONEOUSNICKNAME
-                    if (ServerError != null) {
+                    if (OnServerError != null) {
                         int err;
                         bool errconv = int.TryParse(command.command, out err);
                         if (errconv) {
-                            ServerError(this, err, "Got error: " + command.command);
+                            OnServerError(this, err, "Got error: " + command.command);
                         }
                     }
                     break;
@@ -622,45 +622,45 @@ namespace Literal {
                         Random rnd = new Random();
                         await Nick(me + rnd.Next(000, 999).ToString());
                     } else {
-                        if (ServerError != null) {
-                            ServerError(this, 433, "Nickname in use");
+                        if (OnServerError != null) {
+                            OnServerError(this, 433, "Nickname in use");
                         }
                     }
                     break;
 
                 case "437": // ERR_BANNICKCHANGE / Attempt to change nick while banned on a chan
-                    if (ServerError != null) {
-                        ServerError(this, 437, "You can't change nick while banned");
+                    if (OnServerError != null) {
+                        OnServerError(this, 437, "You can't change nick while banned");
                     }
                     break;
 
                 case "471": // ERR_CHANNELISFULL / For example, when there's the mode +l and the channel is already full
-                    if (ServerError != null) {
-                        ServerError(this, 471, command.args[0] + " Channel is full");
+                    if (OnServerError != null) {
+                        OnServerError(this, 471, command.args[0] + " Channel is full");
                     }
                     break;
 
                 case "473": // ERR_INVITEONLYCHAN / The channel is invite only
-                    if (ServerError != null) {
-                        ServerError(this, 473, command.args[0] + " This channel is invite only");
+                    if (OnServerError != null) {
+                        OnServerError(this, 473, command.args[0] + " This channel is invite only");
                     }
                     break;
 
                 case "474": // ERR_BANNEDFROMCHAN / Cannot join on a channel while you're banned on it.
-                    if (ServerError != null) {
-                        ServerError(this, 474, command.args[0] + "You are banned from this channel");
+                    if (OnServerError != null) {
+                        OnServerError(this, 474, command.args[0] + "You are banned from this channel");
                     }
                     break;
 
                 case "475": // ERR_BADCHANNELKEY / Keyword to join that channel is incorrect
-                    if (ServerError != null) {
-                        ServerError(this, 475, command.args[0] + "The keyword for this channel is incorrect");
+                    if (OnServerError != null) {
+                        OnServerError(this, 475, command.args[0] + "The keyword for this channel is incorrect");
                     }
                     break;
 
                 case "478": // ERR_BANLISTFULL / Ban list on that channel is full, cannot add more bans.
-                    if (ServerError != null) {
-                        ServerError(this, 478, command.args[0] + "The banlist is full"); // To be completed (Need specify channel).
+                    if (OnServerError != null) {
+                        OnServerError(this, 478, command.args[0] + "The banlist is full"); // To be completed (Need specify channel).
                     }
                     break;
 
